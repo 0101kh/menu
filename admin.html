@@ -107,10 +107,12 @@
 <script>
 const PARAMS=new URLSearchParams(location.search);
 const RID=(PARAMS.get("r")||"").replace(/[^a-z0-9_-]/gi,"");
+const PNAME=PARAMS.get("name")||"";
+const PWA=(PARAMS.get("wa")||"").replace(/\D/g,"");
 const KEY="menuAdminDraft"+(RID?"_"+RID:"");
 let draft=null,C=null;
 function DEFAULT_DRAFT(){return {
-  config:{name:RID||"Burger",tagline:"Быстро. Вкусно. С доставкой.",whatsapp:"",currency:"₽",
+  config:{name:PNAME||RID||"Burger",tagline:"Быстро. Вкусно. С доставкой.",whatsapp:PWA,currency:"₽",
           deliveryFee:150,minOrder:500,workTime:"30–45 мин"},
   menu:[{cat:"Бургеры",items:[{id:nid(),name:"Чизбургер",desc:"Говядина, чеддер, соус",price:320,img:""}]}]
 }}
