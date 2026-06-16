@@ -39,11 +39,16 @@
   .item.in{animation:rise .5s cubic-bezier(.2,.7,.2,1) forwards}
   @keyframes rise{to{opacity:1;transform:translateY(0)}}
   .item:active{transform:scale(.99)}
+  .item.sized{flex-direction:column;align-items:stretch}
+  .item-top{display:flex;gap:14px;align-items:center}
   .item-img{width:68px;height:68px;border-radius:13px;object-fit:cover;flex:none;box-shadow:0 4px 12px rgba(0,0,0,.3)}
   .item-ph{width:68px;height:68px;border-radius:13px;flex:none;display:grid;place-items:center;background:var(--ph);border:1px solid var(--line)}
   .item-body{flex:1;min-width:0}.item-name{font-size:15.5px;font-weight:700;margin:0;color:var(--ink)}
   .item-desc{font-size:12.5px;color:var(--muted);margin:4px 0 0;line-height:1.35}
   .item-side{display:flex;flex-direction:column;align-items:flex-end;gap:11px}
+  .sizes{display:flex;flex-direction:column;gap:8px;margin-top:13px}
+  .size-row{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:13px;background:var(--ph);border:1px solid var(--line)}
+  .size-name{flex:1;font-size:14px;font-weight:600;color:var(--ink)}
   .price{font-weight:800;font-size:13.5px;background:linear-gradient(135deg,var(--price),var(--price-dk));color:var(--price-ink);padding:6px 12px;border-radius:999px;white-space:nowrap;box-shadow:0 3px 12px var(--glow)}
   .add{width:42px;height:42px;border-radius:13px;border:none;cursor:pointer;background:linear-gradient(135deg,var(--acc-lt),var(--accent));color:var(--acc-ink);font-size:25px;font-weight:700;display:grid;place-items:center;line-height:1;transition:.12s;box-shadow:0 4px 14px var(--glow)}
   .add:active{transform:scale(.88)}
@@ -178,115 +183,131 @@ const MENU = [
     "items": [
       {
         "id": "pz1",
-        "name": "Пепперони · 25 см",
+        "name": "Пепперони",
         "desc": "Томатный соус, моцарелла, пепперони",
-        "price": 580,
-        "img": ""
+        "img": "",
+        "sizes": [
+          {
+            "label": "25 см",
+            "price": 580
+          },
+          {
+            "label": "35 см",
+            "price": 780
+          }
+        ]
       },
       {
         "id": "pz2",
-        "name": "Пепперони · 35 см",
-        "desc": "Томатный соус, моцарелла, пепперони",
-        "price": 780,
-        "img": ""
+        "name": "4 сыра",
+        "desc": "Моцарелла, пармезан, гауда, дор блю",
+        "img": "",
+        "sizes": [
+          {
+            "label": "25 см",
+            "price": 540
+          },
+          {
+            "label": "35 см",
+            "price": 770
+          }
+        ]
       },
       {
         "id": "pz3",
-        "name": "4 сыра · 25 см",
-        "desc": "Моцарелла, пармезан, гауда, дор блю",
-        "price": 540,
-        "img": ""
+        "name": "Гавайская с ананасами",
+        "desc": "Соус от шефа, курица, ананас, моцарелла",
+        "img": "",
+        "sizes": [
+          {
+            "label": "25 см",
+            "price": 580
+          },
+          {
+            "label": "35 см",
+            "price": 770
+          }
+        ]
       },
       {
         "id": "pz4",
-        "name": "4 сыра · 35 см",
-        "desc": "Моцарелла, пармезан, гауда, дор блю",
-        "price": 770,
-        "img": ""
+        "name": "Мясная Кайла",
+        "desc": "Фирменный соус, сочная говядина, моцарелла",
+        "img": "",
+        "sizes": [
+          {
+            "label": "25 см",
+            "price": 670
+          },
+          {
+            "label": "35 см",
+            "price": 870
+          }
+        ]
       },
       {
         "id": "pz5",
-        "name": "Гавайская с ананасами · 25 см",
-        "desc": "Соус от шефа, курица, ананас, моцарелла",
-        "price": 580,
-        "img": ""
+        "name": "От шефа Мантов",
+        "desc": "2 вида соуса, говяжья мякоть, фета, моцарелла, укроп",
+        "img": "",
+        "sizes": [
+          {
+            "label": "25 см",
+            "price": 690
+          },
+          {
+            "label": "35 см",
+            "price": 890
+          }
+        ]
       },
       {
         "id": "pz6",
-        "name": "Гавайская с ананасами · 35 см",
-        "desc": "Соус от шефа, курица, ананас, моцарелла",
-        "price": 770,
-        "img": ""
+        "name": "Сытый папа",
+        "desc": "2 вида соуса, говяжья мякоть, фри, сырный соус",
+        "img": "",
+        "sizes": [
+          {
+            "label": "25 см",
+            "price": 670
+          },
+          {
+            "label": "35 см",
+            "price": 870
+          }
+        ]
       },
       {
         "id": "pz7",
-        "name": "Мясная Кайла · 25 см",
-        "desc": "Фирменный соус, сочная говядина, моцарелла",
-        "price": 670,
-        "img": ""
+        "name": "Ассорти",
+        "desc": "Шампиньоны, томаты, болгарский перец, фирменный сыр",
+        "img": "",
+        "sizes": [
+          {
+            "label": "25 см",
+            "price": 660
+          },
+          {
+            "label": "35 см",
+            "price": 790
+          }
+        ]
       },
       {
         "id": "pz8",
-        "name": "Мясная Кайла · 35 см",
-        "desc": "Фирменный соус, сочная говядина, моцарелла",
-        "price": 870,
-        "img": ""
-      },
-      {
-        "id": "pz9",
-        "name": "От шефа Мантов · 25 см",
-        "desc": "2 вида соуса, говяжья мякоть, фета, моцарелла, укроп",
-        "price": 690,
-        "img": ""
-      },
-      {
-        "id": "pz10",
-        "name": "От шефа Мантов · 35 см",
-        "desc": "2 вида соуса, говяжья мякоть, фета, моцарелла, укроп",
-        "price": 890,
-        "img": ""
-      },
-      {
-        "id": "pz11",
-        "name": "Сытый папа · 25 см",
-        "desc": "2 вида соуса, говяжья мякоть, фри, сырный соус",
-        "price": 670,
-        "img": ""
-      },
-      {
-        "id": "pz12",
-        "name": "Сытый папа · 35 см",
-        "desc": "2 вида соуса, говяжья мякоть, фри, сырный соус",
-        "price": 870,
-        "img": ""
-      },
-      {
-        "id": "pz13",
-        "name": "Ассорти · 25 см",
-        "desc": "Шампиньоны, томаты, болгарский перец, фирменный сыр",
-        "price": 660,
-        "img": ""
-      },
-      {
-        "id": "pz14",
-        "name": "Ассорти · 35 см",
-        "desc": "Шампиньоны, томаты, болгарский перец, фирменный сыр",
-        "price": 790,
-        "img": ""
-      },
-      {
-        "id": "pz15",
-        "name": "Жульен · 25 см",
+        "name": "Жульен",
         "desc": "Рис, курица, моцарелла, шампиньоны",
-        "price": 580,
-        "img": ""
-      },
-      {
-        "id": "pz16",
-        "name": "Жульен · 35 см",
-        "desc": "Рис, курица, моцарелла, шампиньоны",
-        "price": 810,
-        "img": ""
+        "img": "",
+        "sizes": [
+          {
+            "label": "25 см",
+            "price": 580
+          },
+          {
+            "label": "35 см",
+            "price": 810
+          }
+        ]
       }
     ]
   },
@@ -297,50 +318,50 @@ const MENU = [
         "id": "bg1",
         "name": "Супер чиз",
         "desc": "Сочная котлета, двойной сыр, фирменный соус",
-        "price": 499,
-        "img": ""
+        "img": "",
+        "price": 499
       },
       {
         "id": "bg2",
         "name": "От шефа",
         "desc": "Чёрная булочка, говядина, бекон, томат",
-        "price": 489,
-        "img": ""
+        "img": "",
+        "price": 489
       },
       {
         "id": "bg3",
         "name": "Много мяса",
         "desc": "Двойная котлета, сыр, салат, томат",
-        "price": 449,
-        "img": ""
+        "img": "",
+        "price": 449
       },
       {
         "id": "bg4",
         "name": "Фирменный",
         "desc": "Чёрная булочка, говядина, овощи, соус",
-        "price": 379,
-        "img": ""
+        "img": "",
+        "price": 379
       },
       {
         "id": "bg5",
         "name": "Чизбургер",
         "desc": "Говядина, сыр чеддер, соус, лук",
-        "price": 329,
-        "img": ""
+        "img": "",
+        "price": 329
       },
       {
         "id": "bg6",
         "name": "Чикен чизбургер",
         "desc": "Куриное филе, сыр, салат, соус",
-        "price": 299,
-        "img": ""
+        "img": "",
+        "price": 299
       },
       {
         "id": "bg7",
         "name": "Кранши куриный",
         "desc": "Хрустящая курица, томат, салат, соус",
-        "price": 299,
-        "img": ""
+        "img": "",
+        "price": 299
       }
     ]
   },
@@ -351,43 +372,43 @@ const MENU = [
         "id": "hd1",
         "name": "Фирменный говяжий",
         "desc": "Мякоть говядины, томат, огурец, айсберг, кетчуп, чеснок, чипсы",
-        "price": 329,
-        "img": ""
+        "img": "",
+        "price": 329
       },
       {
         "id": "hd2",
         "name": "М-Дог",
         "desc": "2 вида соуса, сосиски, стрипсы, томаты, айсберг, огурцы, чипсы",
-        "price": 299,
-        "img": ""
+        "img": "",
+        "price": 299
       },
       {
         "id": "hd3",
         "name": "Фри дог",
         "desc": "Стрипсы, фри, соус кетчуп-чеснок, томаты, огурцы",
-        "price": 289,
-        "img": ""
+        "img": "",
+        "price": 289
       },
       {
         "id": "hd4",
         "name": "Чикен дог",
         "desc": "2 вида соуса, стрипсы, томаты, огурцы",
-        "price": 279,
-        "img": ""
+        "img": "",
+        "price": 279
       },
       {
         "id": "hd5",
         "name": "Датский",
         "desc": "Сосиска, маринованные огурцы, кетчуп-горчица, жареный лук",
-        "price": 269,
-        "img": ""
+        "img": "",
+        "price": 269
       },
       {
         "id": "hd6",
         "name": "Французский хот-дог",
         "desc": "Соус кетчуп-горчица, сосиска",
-        "price": 239,
-        "img": ""
+        "img": "",
+        "price": 239
       }
     ]
   },
@@ -396,87 +417,83 @@ const MENU = [
     "items": [
       {
         "id": "sn1",
-        "name": "Крылышки · 6 шт",
+        "name": "Крылышки",
         "desc": "",
-        "price": 269,
-        "img": ""
+        "img": "",
+        "sizes": [
+          {
+            "label": "6 шт",
+            "price": 269
+          },
+          {
+            "label": "9 шт",
+            "price": 409
+          },
+          {
+            "label": "12 шт",
+            "price": 539
+          },
+          {
+            "label": "18 шт",
+            "price": 799
+          }
+        ]
       },
       {
         "id": "sn2",
-        "name": "Крылышки · 9 шт",
+        "name": "Наггетсы",
         "desc": "",
-        "price": 409,
-        "img": ""
+        "img": "",
+        "sizes": [
+          {
+            "label": "6 шт",
+            "price": 149
+          },
+          {
+            "label": "9 шт",
+            "price": 219
+          },
+          {
+            "label": "18 шт",
+            "price": 399
+          }
+        ]
       },
       {
         "id": "sn3",
-        "name": "Крылышки · 12 шт",
+        "name": "Стрипсы",
         "desc": "",
-        "price": 539,
-        "img": ""
+        "img": "",
+        "sizes": [
+          {
+            "label": "3 шт",
+            "price": 209
+          },
+          {
+            "label": "6 шт",
+            "price": 389
+          }
+        ]
       },
       {
         "id": "sn4",
-        "name": "Крылышки · 18 шт",
+        "name": "Сырные палочки",
         "desc": "",
-        "price": 799,
-        "img": ""
-      },
-      {
-        "id": "sn5",
-        "name": "Наггетсы · 6 шт",
-        "desc": "",
-        "price": 149,
-        "img": ""
-      },
-      {
-        "id": "sn6",
-        "name": "Наггетсы · 9 шт",
-        "desc": "",
-        "price": 219,
-        "img": ""
-      },
-      {
-        "id": "sn7",
-        "name": "Наггетсы · 18 шт",
-        "desc": "",
-        "price": 399,
-        "img": ""
-      },
-      {
-        "id": "sn8",
-        "name": "Стрипсы · 3 шт",
-        "desc": "",
-        "price": 209,
-        "img": ""
-      },
-      {
-        "id": "sn9",
-        "name": "Стрипсы · 6 шт",
-        "desc": "",
-        "price": 389,
-        "img": ""
-      },
-      {
-        "id": "sn10",
-        "name": "Сырные палочки · 3 шт",
-        "desc": "",
-        "price": 149,
-        "img": ""
-      },
-      {
-        "id": "sn11",
-        "name": "Сырные палочки · 6 шт",
-        "desc": "",
-        "price": 219,
-        "img": ""
-      },
-      {
-        "id": "sn12",
-        "name": "Сырные палочки · 9 шт",
-        "desc": "",
-        "price": 399,
-        "img": ""
+        "img": "",
+        "sizes": [
+          {
+            "label": "3 шт",
+            "price": 149
+          },
+          {
+            "label": "6 шт",
+            "price": 219
+          },
+          {
+            "label": "9 шт",
+            "price": 399
+          }
+        ]
       }
     ]
   },
@@ -485,31 +502,35 @@ const MENU = [
     "items": [
       {
         "id": "kt1",
-        "name": "Картофель фри · стандарт",
+        "name": "Картофель фри",
         "desc": "",
-        "price": 139,
-        "img": ""
+        "img": "",
+        "sizes": [
+          {
+            "label": "стандарт",
+            "price": 139
+          },
+          {
+            "label": "большой",
+            "price": 249
+          }
+        ]
       },
       {
         "id": "kt2",
-        "name": "Картофель фри · большой",
+        "name": "Картофель по-деревенски",
         "desc": "",
-        "price": 249,
-        "img": ""
-      },
-      {
-        "id": "kt3",
-        "name": "Картофель по-деревенски · стандарт",
-        "desc": "",
-        "price": 179,
-        "img": ""
-      },
-      {
-        "id": "kt4",
-        "name": "Картофель по-деревенски · большой",
-        "desc": "",
-        "price": 299,
-        "img": ""
+        "img": "",
+        "sizes": [
+          {
+            "label": "стандарт",
+            "price": 179
+          },
+          {
+            "label": "большой",
+            "price": 299
+          }
+        ]
       }
     ]
   }
@@ -536,7 +557,7 @@ const G=accLt;
 if(CONFIG.logo){document.getElementById("logoWrap").innerHTML='<svg class="mark" style="display:block" width="92" height="58" viewBox="0 0 100 62" fill="none" stroke="'+G+'" stroke-width="2.4" stroke-linecap="round"><path d="M9 53 A41 41 0 0 1 91 53 Z"/><line x1="50" y1="53" x2="30" y2="18"/><line x1="50" y1="53" x2="50" y2="12"/><line x1="50" y1="53" x2="70" y2="18"/><circle cx="50" cy="27" r="3.2" fill="'+G+'" stroke="none"/><circle cx="37" cy="42" r="3.2" fill="'+G+'" stroke="none"/><circle cx="63" cy="42" r="3.2" fill="'+G+'" stroke="none"/></svg>'}
 const bEl=document.getElementById("brandName");bEl.textContent=CONFIG.name;if(CONFIG.serif)bEl.classList.add("serif");
 if(CONFIG.sub){const s=document.getElementById("brandSub");s.textContent=CONFIG.sub;s.classList.add("show")}
-const tg=document.getElementById("tagline");tg.textContent=CONFIG.tagline||"";if(CONFIG.serif)tg.classList.add("serif");
+const tgEl=document.getElementById("tagline");tgEl.textContent=CONFIG.tagline||"";if(CONFIG.serif)tgEl.classList.add("serif");
 if(CONFIG.halal)document.getElementById("halal").classList.add("show");
 
 const ICONS={
@@ -553,6 +574,9 @@ function catIcon(cat){const c=(cat||"").toLowerCase();
 
 const cart={};const byId={};
 MENU.forEach(s=>s.items.forEach(i=>byId[i.id]=i));
+function resolve(key){const a=key.split("@");const it=byId[a[0]];
+  if(a.length>1){const sz=it.sizes[+a[1]];return {name:it.name+" · "+sz.label,price:sz.price}}
+  return {name:it.name,price:it.price};}
 const cur=CONFIG.currency;const money=n=>n.toLocaleString("ru-RU")+" "+cur;
 const mainBtn=document.getElementById("mainBtn");const trayBtn=document.getElementById("trayBtn");
 document.getElementById("infoTime").textContent="⏱ "+CONFIG.workTime;
@@ -564,21 +588,27 @@ const menuEl=document.getElementById("menu");
 const revObs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");revObs.unobserve(e.target)}})},{rootMargin:"0px 0px -8% 0px"});
 MENU.forEach((s,idx)=>{const sec=document.createElement("section");sec.id="sec-"+idx;sec.innerHTML='<h2 class="sec-title">'+s.cat+'</h2>';
   s.items.forEach(it=>{const row=document.createElement("div");row.className="item";
-    row.innerHTML=(it.img?'<img class="item-img" src="'+it.img+'" alt="">':'<div class="item-ph">'+catIcon(s.cat)+'</div>')+
-      '<div class="item-body"><p class="item-name">'+it.name+'</p>'+(it.desc?'<p class="item-desc">'+it.desc+'</p>':'')+'</div>'+
-      '<div class="item-side"><span class="price">'+money(it.price)+'</span><div id="ctrl-'+it.id+'"></div></div>';
+    const imgH=it.img?'<img class="item-img" src="'+it.img+'" alt="">':'<div class="item-ph">'+catIcon(s.cat)+'</div>';
+    const bodyH='<div class="item-body"><p class="item-name">'+it.name+'</p>'+(it.desc?'<p class="item-desc">'+it.desc+'</p>':'')+'</div>';
+    if(it.sizes&&it.sizes.length){row.classList.add("sized");
+      let sr=it.sizes.map((sz,si)=>'<div class="size-row"><span class="size-name">'+sz.label+'</span><span class="price">'+money(sz.price)+'</span><div id="ctrl-'+it.id+'@'+si+'"></div></div>').join("");
+      row.innerHTML='<div class="item-top">'+imgH+bodyH+'</div><div class="sizes">'+sr+'</div>';
+    }else{
+      row.innerHTML=imgH+bodyH+'<div class="item-side"><span class="price">'+money(it.price)+'</span><div id="ctrl-'+it.id+'"></div></div>';
+    }
     sec.appendChild(row);menuEl.appendChild(sec);revObs.observe(row)})});
 const catBtns=[...catsEl.children];
 const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){const i=+e.target.id.split("-")[1];catBtns.forEach((b,k)=>b.classList.toggle("active",k===i))}})},{rootMargin:"-55% 0px -42% 0px"});
 MENU.forEach((s,idx)=>obs.observe(document.getElementById("sec-"+idx)));
-function renderCtrl(id){const el=document.getElementById("ctrl-"+id);const q=cart[id]||0;
-  if(q===0){el.innerHTML='<button class="add" type="button">+</button>';el.firstChild.onclick=()=>change(id,1)}
-  else{el.innerHTML='<div class="stepper"><button type="button">−</button><span class="q">'+q+'</span><button type="button">+</button></div>';const m=el.firstChild.children[0],p=el.firstChild.children[2];m.onclick=()=>change(id,-1);p.onclick=()=>change(id,1)}}
-MENU.forEach(s=>s.items.forEach(i=>renderCtrl(i.id)));
-function change(id,d){cart[id]=(cart[id]||0)+d;if(cart[id]<=0)delete cart[id];renderCtrl(id);updateTray();
+function ctrlKeys(){const ks=[];MENU.forEach(s=>s.items.forEach(it=>{if(it.sizes&&it.sizes.length){it.sizes.forEach((sz,si)=>ks.push(it.id+"@"+si))}else{ks.push(it.id)}}));return ks}
+function renderCtrl(key){const el=document.getElementById("ctrl-"+key);if(!el)return;const q=cart[key]||0;
+  if(q===0){el.innerHTML='<button class="add" type="button">+</button>';el.firstChild.onclick=()=>change(key,1)}
+  else{el.innerHTML='<div class="stepper"><button type="button">−</button><span class="q">'+q+'</span><button type="button">+</button></div>';const m=el.firstChild.children[0],p=el.firstChild.children[2];m.onclick=()=>change(key,-1);p.onclick=()=>change(key,1)}}
+ctrlKeys().forEach(renderCtrl);
+function change(key,d){cart[key]=(cart[key]||0)+d;if(cart[key]<=0)delete cart[key];renderCtrl(key);updateTray();
   if(d>0){trayBtn.classList.remove("bump");void trayBtn.offsetWidth;trayBtn.classList.add("bump")}
   if(document.getElementById("sheet").classList.contains("show")&&document.getElementById("resultBlock").style.display==="none")renderTicket()}
-function subtotal(){return Object.entries(cart).reduce((s,[id,q])=>s+byId[id].price*q,0)}
+function subtotal(){return Object.entries(cart).reduce((s,[k,q])=>s+resolve(k).price*q,0)}
 function count(){return Object.values(cart).reduce((s,q)=>s+q,0)}
 function updateTray(){const n=count();document.getElementById("trayCount").textContent=n;document.getElementById("trayTotal").textContent=money(subtotal());document.getElementById("tray").classList.toggle("show",n>0)}
 function openSheet(){backToCart();renderTicket();document.getElementById("overlay").classList.add("show");document.getElementById("sheet").classList.add("show");document.body.style.overflow="hidden"}
@@ -586,14 +616,14 @@ function closeSheet(){document.getElementById("overlay").classList.remove("show"
 function renderTicket(){const t2=document.getElementById("ticket");const ids=Object.keys(cart);
   if(ids.length===0){t2.innerHTML='<div class="empty">Корзина пуста 🍕</div>';document.getElementById("formBlock").style.display="none";mainBtn.disabled=true;return}
   document.getElementById("formBlock").style.display="";mainBtn.disabled=false;
-  let rows="";ids.forEach(id=>{const it=byId[id],q=cart[id];rows+='<div class="t-row"><span class="t-name"><span class="t-q">'+q+'×</span>'+it.name+'</span><span>'+money(it.price*q)+'</span><span class="t-mini"><button type="button" onclick="change(\''+id+'\',-1)">−</button><button type="button" onclick="change(\''+id+'\',1)">+</button></span></div>'});
+  let rows="";ids.forEach(k=>{const r=resolve(k),q=cart[k];rows+='<div class="t-row"><span class="t-name"><span class="t-q">'+q+'×</span>'+r.name+'</span><span>'+money(r.price*q)+'</span><span class="t-mini"><button type="button" onclick="change(\''+k+'\',-1)">−</button><button type="button" onclick="change(\''+k+'\',1)">+</button></span></div>'});
   const sub=subtotal(),dlv=CONFIG.deliveryFee||0,total=sub+dlv;
   let sums='<div class="t-sum"><span>Сумма</span><span>'+money(sub)+'</span></div>';if(dlv>0)sums+='<div class="t-sum"><span>Доставка</span><span>'+money(dlv)+'</span></div>';
   sums+='<div class="t-total"><span>Итого</span><span>'+money(total)+'</span></div>';
   t2.innerHTML='<div class="t-total" style="font-size:13px;letter-spacing:1px;color:var(--acc-lt)">🧾 ВАШ ЗАКАЗ</div><hr class="tear">'+rows+'<hr class="tear">'+sums}
 function buildOrderText(name,phone,addr,note){const sub=subtotal(),dlv=CONFIG.deliveryFee||0,total=sub+dlv;let lines=[];
   lines.push("🧾 НОВЫЙ ЗАКАЗ — "+CONFIG.name);lines.push("————————————");
-  Object.keys(cart).forEach(id=>{const it=byId[id],q=cart[id];lines.push(q+"× "+it.name+" — "+money(it.price*q))});
+  Object.keys(cart).forEach(k=>{const r=resolve(k),q=cart[k];lines.push(q+"× "+r.name+" — "+money(r.price*q))});
   lines.push("————————————");lines.push("Сумма: "+money(sub));if(dlv>0)lines.push("Доставка: "+money(dlv));
   lines.push("ИТОГО: "+money(total));lines.push("");lines.push("👤 "+name);lines.push("📞 "+phone);lines.push("📍 "+addr);if(note)lines.push("💬 "+note);return lines.join("\n")}
 function copyText(x){try{navigator.clipboard.writeText(x)}catch(e){const ta=document.createElement("textarea");ta.value=x;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.focus();ta.select();try{document.execCommand("copy")}catch(_){}document.body.removeChild(ta)}}
@@ -623,7 +653,7 @@ mainBtn.onclick=orderConfirm;updateTray();
   var fm=document.getElementById("fMap");if(fm){if(CONFIG.yandex){fm.href=CONFIG.yandex}else{fm.style.display="none"}}
   if(!CONFIG.address&&fa)fa.closest(".frow").style.display="none";
   if(!CONFIG.openHours&&fh)fh.closest(".frow").style.display="none";
-  var fc=document.getElementById("fCopy");if(fc)fc.textContent=CONFIG.name+(CONFIG.tagline?" · "+CONFIG.tagline:"");
+  var fcp=document.getElementById("fCopy");if(fcp)fcp.textContent=CONFIG.name+(CONFIG.tagline?" · "+CONFIG.tagline:"");
   var c=document.getElementById("fChannels");if(c){
     if(CONFIG.max){var a=document.createElement("a");a.className="ch-max";a.href=CONFIG.max;a.target="_blank";a.rel="noopener";a.textContent="МАКС";c.appendChild(a)}
     if(CONFIG.telegram){var a2=document.createElement("a");a2.className="ch-tg";a2.href="https://t.me/"+CONFIG.telegram.replace(/^@/,"");a2.target="_blank";a2.rel="noopener";a2.textContent="Telegram";c.appendChild(a2)}
