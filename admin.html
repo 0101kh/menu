@@ -9,13 +9,11 @@
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,system-ui,sans-serif;line-height:1.4}
   .top{position:sticky;top:0;z-index:10;background:var(--ink);color:#fff;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:10px}
-  .top h1{font-size:17px;margin:0;font-weight:800}
-  .top .saved{font-size:12px;color:#9c9189}
-  .top .who{font-size:12px;color:#C9A36F;font-weight:700;margin-top:2px}
+  .top h1{font-size:17px;margin:0;font-weight:800}.top .saved{font-size:12px;color:#9c9189}.top .who{font-size:12px;color:#C9A36F;font-weight:700;margin-top:2px}
   .wrap{max-width:760px;margin:0 auto;padding:18px 16px 150px}
   .block{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:16px}
   .block h2{font-size:13px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--accent);margin:0 0 14px}
-  .sub{font-size:12px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);margin:16px 0 10px}
+  .sub{font-size:12px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);margin:18px 0 10px}
   .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
   @media(max-width:560px){.grid{grid-template-columns:1fr}}
   label{display:block;font-size:12.5px;font-weight:700;margin-bottom:5px}
@@ -23,21 +21,19 @@
   input,textarea,select{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:11px 12px;font-size:15px;font-family:inherit;background:#fff;color:var(--ink)}
   input:focus,textarea:focus,select:focus{outline:none;border-color:var(--accent)}
   input[type=color]{padding:4px;height:44px;cursor:pointer}
+  .chk{display:flex;align-items:center;gap:9px;font-size:14px;font-weight:600;padding:9px 0;cursor:pointer}
+  .chk input{width:20px;height:20px;flex:none}
   textarea{resize:vertical;min-height:48px}
   .cat{border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:12px;background:#FBF8F3}
-  .cat-head{display:flex;gap:8px;align-items:center;margin-bottom:10px}
-  .cat-head input{font-weight:700}
+  .cat-head{display:flex;gap:8px;align-items:center;margin-bottom:10px}.cat-head input{font-weight:700}
   .item{display:flex;gap:10px;background:#fff;border:1px solid var(--line);border-radius:11px;padding:10px;margin-bottom:9px;align-items:stretch}
   .thumb{width:60px;height:60px;flex:none;border-radius:10px;border:1.5px dashed var(--line);background:#fff center/cover no-repeat;display:grid;place-items:center;cursor:pointer;position:relative;color:var(--muted);font-size:22px}
   .thumb.has{border-style:solid}
   .thumb-x{position:absolute;top:-7px;right:-7px;width:22px;height:22px;border-radius:50%;border:2px solid #fff;background:var(--accent);color:#fff;font-size:11px;cursor:pointer;display:grid;place-items:center;line-height:1;padding:0}
   .item-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
-  .item-body input{padding:9px 10px;font-size:14px}
-  .item-body .r{display:flex;gap:6px;align-items:center}
-  .item-body .r .price{width:90px;flex:none}
+  .item-body input{padding:9px 10px;font-size:14px}.item-body .r{display:flex;gap:6px;align-items:center}.item-body .r .price{width:90px;flex:none}
   .ib{width:34px;height:34px;border:1px solid var(--line);background:#fff;border-radius:8px;cursor:pointer;font-size:15px;color:var(--muted);display:grid;place-items:center;flex:none}
-  .ib:hover{border-color:var(--accent);color:var(--accent)}
-  .ib.del:hover{background:#fdeeec}
+  .ib:hover{border-color:var(--accent);color:var(--accent)}.ib.del:hover{background:#fdeeec}
   .addbtn{background:none;border:1.5px dashed var(--line);color:var(--muted);border-radius:10px;padding:9px;width:100%;cursor:pointer;font-size:13.5px;font-weight:600}
   .addbtn:hover{border-color:var(--accent);color:var(--accent)}
   .reset{display:block;margin:14px auto 0;background:none;border:none;color:var(--muted);font-size:12.5px;text-decoration:underline;cursor:pointer}
@@ -45,82 +41,81 @@
   .bar-in{max-width:760px;margin:0 auto}
   .msg{font-size:13px;font-weight:600;margin:0 0 8px;display:none;text-align:center}
   .msg.show{display:block}.msg.err{color:var(--accent)}.msg.ok{color:#1a9d4d}
-  .btns{display:flex;gap:10px}
-  .btn{border:none;border-radius:11px;padding:14px 16px;font-size:15px;font-weight:800;cursor:pointer;flex:1}
-  .btn-2{background:#fff;color:var(--ink);border:1.5px solid var(--line);font-weight:700}
-  .btn-main{background:var(--ok);color:#fff}
+  .btns{display:flex;gap:10px}.btn{border:none;border-radius:11px;padding:14px 16px;font-size:15px;font-weight:800;cursor:pointer;flex:1}
+  .btn-2{background:#fff;color:var(--ink);border:1.5px solid var(--line);font-weight:700}.btn-main{background:var(--ok);color:#fff}
 </style>
 </head>
 <body>
-<div class="top">
-  <div><h1>🍔 Редактор меню</h1><div class="who" id="who"></div></div>
-  <span class="saved" id="saved">сохраняется автоматически</span>
-</div>
+<div class="top"><div><h1>🍔 Редактор меню</h1><div class="who" id="who"></div></div><span class="saved" id="saved">сохраняется автоматически</span></div>
 <div class="wrap">
   <div class="block">
     <h2>Ресторан</h2>
     <div class="grid">
-      <div><label>Название</label><input id="c_name" placeholder="MONZA PIZZA"></div>
-      <div><label>Подзаголовок</label><input id="c_tagline" placeholder="Вкус, который объединяет"></div>
-      <div><label>Тема</label><select id="c_theme"><option value="light">Светлая</option><option value="dark">Тёмная</option></select></div>
-      <div><label>Фирменный цвет</label><input id="c_accent" type="color"></div>
+      <div><label>Название</label><input id="c_name" placeholder="MONZA"></div>
+      <div><label>Подпись бренда</label><input id="c_sub" placeholder="PIZZA"><div class="hint">маленькая строка под названием</div></div>
+      <div><label>Слоган</label><input id="c_tagline" placeholder="Вкус, который объединяет"></div>
       <div><label>Время доставки</label><input id="c_time" placeholder="40–60 мин"></div>
       <div><label>Валюта</label><input id="c_cur" placeholder="₽"></div>
       <div><label>Стоимость доставки</label><input id="c_dlv" inputmode="numeric" placeholder="0"><div class="hint">0 = бесплатно</div></div>
       <div><label>Минимальный заказ</label><input id="c_min" inputmode="numeric" placeholder="0"><div class="hint">0 = без минимума</div></div>
     </div>
+    <div class="sub">Оформление</div>
+    <div class="grid">
+      <div><label>Тема</label><select id="c_theme"><option value="light">Светлая</option><option value="dark">Тёмная</option></select></div>
+      <div><label>Цвет фона (тёмная тема)</label><input id="c_bg" type="color"></div>
+      <div><label>Фирменный цвет (логотип, кнопки)</label><input id="c_accent" type="color"></div>
+      <div><label>Цвет ценника</label><input id="c_price" type="color"></div>
+    </div>
+    <label class="chk"><input type="checkbox" id="c_logo"> Логотип-пицца над названием</label>
+    <label class="chk"><input type="checkbox" id="c_serif"> Шрифт с засечками (элегантный)</label>
+    <label class="chk"><input type="checkbox" id="c_halal"> Бейдж HALAL</label>
     <div class="sub">Каналы заказа (хотя бы один)</div>
     <div style="margin-bottom:12px"><label>Ссылка МАКС</label><input id="c_max" placeholder="https://max.ru/u/...">
-      <div class="hint">В приложении МАКС: Настройки → значок QR → Поделиться → копировать ссылку</div></div>
+      <div class="hint">В МАКС: Настройки → значок QR → Поделиться → копировать ссылку</div></div>
     <div class="grid">
       <div><label>Telegram (username)</label><input id="c_tg" placeholder="monza_pizza"></div>
       <div><label>WhatsApp (номер)</label><input id="c_wa" inputmode="numeric" placeholder="79991234567"></div>
     </div>
   </div>
-
   <div class="block">
-    <h2>Меню</h2>
-    <div id="cats"></div>
+    <h2>Меню</h2><div id="cats"></div>
     <button class="addbtn" type="button" onclick="addCat()">+ Добавить категорию</button>
     <button class="reset" type="button" onclick="resetAll()">Очистить и начать заново</button>
   </div>
 </div>
-<div class="bar"><div class="bar-in">
-  <p class="msg" id="msg"></p>
-  <div class="btns">
-    <button class="btn btn-2" type="button" onclick="preview()">👁 Предпросмотр</button>
-    <button class="btn btn-main" type="button" onclick="download()">⬇ Сохранить меню</button>
-  </div>
-</div></div>
+<div class="bar"><div class="bar-in"><p class="msg" id="msg"></p>
+  <div class="btns"><button class="btn btn-2" type="button" onclick="preview()">👁 Предпросмотр</button>
+  <button class="btn btn-main" type="button" onclick="download()">⬇ Сохранить меню</button></div></div></div>
 
 <script>
 const PARAMS=new URLSearchParams(location.search);
 const RID=(PARAMS.get("r")||"").replace(/[^a-z0-9_-]/gi,"");
-const PNAME=PARAMS.get("name")||"";
-const PWA=(PARAMS.get("wa")||"").replace(/\D/g,"");
+const PNAME=PARAMS.get("name")||"";const PWA=(PARAMS.get("wa")||"").replace(/\D/g,"");
 const KEY="menuAdminDraft"+(RID?"_"+RID:"");
 let draft=null,C=null;
-function DEFAULT_DRAFT(){return {
-  config:{name:PNAME||RID||"MONZA PIZZA",tagline:"Вкус, который объединяет",theme:"dark",accent:"#C9A24B",
-    currency:"₽",deliveryFee:0,minOrder:0,workTime:"40–60 мин",max:"",telegram:"",whatsapp:PWA},
-  menu:[{cat:"Пицца",items:[{id:nid(),name:"Пепперони · 25 см",desc:"Томатный соус, моцарелла, пепперони",price:580,img:""}]}]
-}}
+function defConfig(){return {name:PNAME||RID||"MONZA",sub:"PIZZA",tagline:"Вкус, который объединяет",
+  theme:"dark",bg:"#0E2A22",accent:"#C9A24B",priceColor:"#E0262C",logo:true,serif:true,halal:true,
+  currency:"₽",deliveryFee:0,minOrder:0,workTime:"40–60 мин",max:"",telegram:"",whatsapp:PWA}}
+function DEFAULT_DRAFT(){return {config:defConfig(),
+  menu:[{cat:"Пицца",items:[{id:nid(),name:"Пепперони · 25 см",desc:"Томатный соус, моцарелла, пепперони",price:580,img:""}]}]}}
 function nid(){return "i"+Math.random().toString(36).slice(2,8)}
-function save(){try{localStorage.setItem(KEY,JSON.stringify(draft));flash("✓ сохранено")}
-  catch(e){flash("⚠ много фото — черновик не сохранён, сохрани меню кнопкой ниже")}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(draft));flash("✓ сохранено")}catch(e){flash("⚠ много фото — сохрани меню кнопкой ниже")}}
 function load(){try{return JSON.parse(localStorage.getItem(KEY))}catch(e){return null}}
-let flashT;function flash(t){const s=document.getElementById("saved");s.textContent=t;
-  clearTimeout(flashT);flashT=setTimeout(()=>s.textContent="сохраняется автоматически",1500)}
+let flashT;function flash(t){const s=document.getElementById("saved");s.textContent=t;clearTimeout(flashT);flashT=setTimeout(()=>s.textContent="сохраняется автоматически",1500)}
 
+const TEXTKEYS=[["c_name","name"],["c_sub","sub"],["c_tagline","tagline"],["c_theme","theme"],["c_bg","bg"],
+ ["c_accent","accent"],["c_price","priceColor"],["c_time","workTime"],["c_cur","currency"],
+ ["c_dlv","deliveryFee"],["c_min","minOrder"],["c_max","max"],["c_tg","telegram"],["c_wa","whatsapp"]];
+const CHKKEYS=[["c_logo","logo"],["c_serif","serif"],["c_halal","halal"]];
 function bindConfig(){
   C=draft.config;
-  [["c_name","name"],["c_tagline","tagline"],["c_theme","theme"],["c_accent","accent"],["c_time","workTime"],
-   ["c_cur","currency"],["c_dlv","deliveryFee"],["c_min","minOrder"],["c_max","max"],["c_tg","telegram"],["c_wa","whatsapp"]]
-  .forEach(([el,k])=>{const node=document.getElementById(el);node.value=C[k]??"";
+  TEXTKEYS.forEach(([el,k])=>{const node=document.getElementById(el);node.value=C[k]??"";
     node.oninput=()=>{let v=node.value;
       if(k==="deliveryFee"||k==="minOrder"){v=parseInt(v.replace(/\D/g,""))||0}
       if(k==="whatsapp"){v=v.replace(/\D/g,"");node.value=v}
       C[k]=v;save()};});
+  CHKKEYS.forEach(([el,k])=>{const node=document.getElementById(el);node.checked=!!C[k];
+    node.onchange=()=>{C[k]=node.checked;save()};});
 }
 
 function resizeImage(file,max,q,cb){const fr=new FileReader();
@@ -130,25 +125,17 @@ function resizeImage(file,max,q,cb){const fr=new FileReader();
     cb(cv.toDataURL("image/jpeg",q))};img.src=fr.result};fr.readAsDataURL(file);}
 
 const catsEl=document.getElementById("cats");
-function render(){
-  catsEl.innerHTML="";
-  draft.menu.forEach((cat,ci)=>{
-    const box=document.createElement("div");box.className="cat";
+function render(){catsEl.innerHTML="";
+  draft.menu.forEach((cat,ci)=>{const box=document.createElement("div");box.className="cat";
     const head=document.createElement("div");head.className="cat-head";
-    const cin=document.createElement("input");cin.value=cat.cat;cin.placeholder="Категория";
-    cin.oninput=()=>{cat.cat=cin.value;save()};head.appendChild(cin);
+    const cin=document.createElement("input");cin.value=cat.cat;cin.placeholder="Категория";cin.oninput=()=>{cat.cat=cin.value;save()};head.appendChild(cin);
     head.appendChild(ib("↑",()=>moveCat(ci,-1)));head.appendChild(ib("↓",()=>moveCat(ci,1)));
-    head.appendChild(ib("✕",()=>{if(confirm("Удалить категорию «"+(cat.cat||"")+"»?")){draft.menu.splice(ci,1);save();render()}},"del"));
-    box.appendChild(head);
-    cat.items.forEach((it,ii)=>{
-      const row=document.createElement("div");row.className="item";
+    head.appendChild(ib("✕",()=>{if(confirm("Удалить категорию?")){draft.menu.splice(ci,1);save();render()}},"del"));box.appendChild(head);
+    cat.items.forEach((it,ii)=>{const row=document.createElement("div");row.className="item";
       const photo=document.createElement("div");photo.className="thumb"+(it.img?" has":"");
-      if(it.img){photo.style.backgroundImage="url("+it.img+")";
-        const x=document.createElement("button");x.type="button";x.className="thumb-x";x.textContent="✕";
-        x.onclick=(e)=>{e.stopPropagation();it.img="";save();render()};photo.appendChild(x)}
+      if(it.img){photo.style.backgroundImage="url("+it.img+")";const x=document.createElement("button");x.type="button";x.className="thumb-x";x.textContent="✕";x.onclick=(e)=>{e.stopPropagation();it.img="";save();render()};photo.appendChild(x)}
       else{photo.innerHTML="<span>📷</span>"}
-      photo.onclick=()=>{const fin=document.createElement("input");fin.type="file";fin.accept="image/*";
-        fin.onchange=()=>{if(fin.files[0])resizeImage(fin.files[0],600,.72,d=>{it.img=d;save();render()})};fin.click()};
+      photo.onclick=()=>{const fin=document.createElement("input");fin.type="file";fin.accept="image/*";fin.onchange=()=>{if(fin.files[0])resizeImage(fin.files[0],600,.72,d=>{it.img=d;save();render()})};fin.click()};
       const body=document.createElement("div");body.className="item-body";
       const n=mkInput(it.name,"Название блюда",v=>{it.name=v;save()});
       const d=mkInput(it.desc,"Описание (необязательно)",v=>{it.desc=v;save()});
@@ -156,65 +143,51 @@ function render(){
       const p=mkInput(it.price,"Цена",v=>{it.price=parseInt((""+v).replace(/\D/g,""))||0;save()});p.className="price";p.inputMode="numeric";
       r.appendChild(p);r.appendChild(ib("↑",()=>moveItem(ci,ii,-1)));r.appendChild(ib("↓",()=>moveItem(ci,ii,1)));
       r.appendChild(ib("✕",()=>{cat.items.splice(ii,1);save();render()},"del"));
-      body.appendChild(n);body.appendChild(d);body.appendChild(r);
-      row.appendChild(photo);row.appendChild(body);box.appendChild(row);
-    });
+      body.appendChild(n);body.appendChild(d);body.appendChild(r);row.appendChild(photo);row.appendChild(body);box.appendChild(row)});
     const add=document.createElement("button");add.className="addbtn";add.type="button";add.textContent="+ блюдо";
-    add.onclick=()=>{cat.items.push({id:nid(),name:"",desc:"",price:0,img:""});save();render()};
-    box.appendChild(add);catsEl.appendChild(box);
-  });
-}
+    add.onclick=()=>{cat.items.push({id:nid(),name:"",desc:"",price:0,img:""});save();render()};box.appendChild(add);catsEl.appendChild(box)});}
 function mkInput(val,ph,on){const i=document.createElement("input");i.value=val??"";i.placeholder=ph;i.oninput=()=>on(i.value);return i}
 function ib(txt,on,cls){const b=document.createElement("button");b.type="button";b.className="ib"+(cls?" "+cls:"");b.textContent=txt;b.onclick=on;return b}
 function moveCat(i,dir){const j=i+dir;if(j<0||j>=draft.menu.length)return;[draft.menu[i],draft.menu[j]]=[draft.menu[j],draft.menu[i]];save();render()}
 function moveItem(ci,i,dir){const arr=draft.menu[ci].items;const j=i+dir;if(j<0||j>=arr.length)return;[arr[i],arr[j]]=[arr[j],arr[i]];save();render()}
 function addCat(){draft.menu.push({cat:"Новая категория",items:[{id:nid(),name:"",desc:"",price:0,img:""}]});save();render()}
-function resetAll(){if(confirm("Стереть всё и начать с чистого листа?")){localStorage.removeItem(KEY);location.reload()}}
+function resetAll(){if(confirm("Стереть всё?")){localStorage.removeItem(KEY);location.reload()}}
 
-async function fetchMenu(rid){try{
-  const res=await fetch(rid+"/index.html",{cache:"no-store"});if(!res.ok)return null;
-  const html=await res.text();
-  let de=html.indexOf("/*DATA_END*/");if(de<0)de=html.indexOf("const cart={}");
-  const cs=html.indexOf("const CONFIG = "),ms=html.indexOf("const MENU = ");
-  if(cs<0||ms<0||de<0)return null;
+async function fetchMenu(rid){try{const res=await fetch(rid+"/index.html",{cache:"no-store"});if(!res.ok)return null;
+  const html=await res.text();let de=html.indexOf("/*DATA_END*/");if(de<0)de=html.indexOf("const cart={}");
+  const cs=html.indexOf("const CONFIG = "),ms=html.indexOf("const MENU = ");if(cs<0||ms<0||de<0)return null;
   const cfg=JSON.parse(html.slice(cs+15,ms).trim().replace(/;$/,""));
   const menu=JSON.parse(html.slice(ms+13,de).trim().replace(/;$/,""));
   menu.forEach(c=>c.items.forEach(i=>{if(!i.id)i.id=nid();if(i.img===undefined)i.img=""}));
-  const def=DEFAULT_DRAFT().config;return {config:Object.assign(def,cfg),menu};
-}catch(e){return null}}
-async function init(){
-  document.getElementById("who").textContent=RID?("Меню: "+RID):"Новое меню";
+  return {config:Object.assign(defConfig(),cfg),menu}}catch(e){return null}}
+async function init(){document.getElementById("who").textContent=RID?("Меню: "+RID):"Новое меню";
   const saved=load();
-  if(saved){draft=saved;draft.config=Object.assign(DEFAULT_DRAFT().config,draft.config)}
+  if(saved){draft=saved;draft.config=Object.assign(defConfig(),draft.config)}
   else if(RID){const m=await fetchMenu(RID);draft=m||DEFAULT_DRAFT();if(!m)flash("начните с нуля и сохраните меню")}
   else{draft=DEFAULT_DRAFT()}
-  bindConfig();render();
-}
+  bindConfig();render();}
 
 function showMsg(t,ok){const m=document.getElementById("msg");m.textContent=t;m.className="msg show "+(ok?"ok":"err");setTimeout(()=>m.classList.remove("show"),4000)}
-function validate(){
-  if(!C.name.trim()){showMsg("Укажите название");return false}
-  if(!C.max.trim()&&!C.telegram.trim()&&C.whatsapp.replace(/\D/g,"").length<10){showMsg("Заполните хотя бы один канал заказа: МАКС, Telegram или WhatsApp");return false}
-  if(!draft.menu.some(c=>c.items.some(i=>i.name.trim()&&i.price>0))){showMsg("Добавьте хотя бы одно блюдо с названием и ценой");return false}
-  return true;
-}
+function validate(){if(!C.name.trim()){showMsg("Укажите название");return false}
+  if(!C.max.trim()&&!C.telegram.trim()&&C.whatsapp.replace(/\D/g,"").length<10){showMsg("Заполните хотя бы один канал: МАКС, Telegram или WhatsApp");return false}
+  if(!draft.menu.some(c=>c.items.some(i=>i.name.trim()&&i.price>0))){showMsg("Добавьте хотя бы одно блюдо с ценой");return false}return true}
 function cleanData(){
   const menu=draft.menu.map(c=>({cat:c.cat.trim(),items:c.items.filter(i=>i.name.trim()&&i.price>0)
     .map(i=>({id:i.id,name:i.name.trim(),desc:(i.desc||"").trim(),price:i.price,img:i.img||""}))})).filter(c=>c.cat&&c.items.length);
-  const config={name:C.name.trim(),tagline:(C.tagline||"").trim(),theme:C.theme||"light",accent:C.accent||"#E0341E",
-    currency:(C.currency||"₽").trim()||"₽",deliveryFee:C.deliveryFee||0,minOrder:C.minOrder||0,workTime:(C.workTime||"").trim()||"30–45 мин",
+  const config={name:C.name.trim(),sub:(C.sub||"").trim(),tagline:(C.tagline||"").trim(),theme:C.theme||"light",
+    bg:C.bg||"#0E2A22",accent:C.accent||"#E0341E",priceColor:C.priceColor||C.accent||"#E0341E",
+    logo:!!C.logo,serif:!!C.serif,halal:!!C.halal,currency:(C.currency||"₽").trim()||"₽",
+    deliveryFee:C.deliveryFee||0,minOrder:C.minOrder||0,workTime:(C.workTime||"").trim()||"30–45 мин",
     max:(C.max||"").trim(),telegram:(C.telegram||"").replace(/^@/,"").trim(),whatsapp:(C.whatsapp||"").replace(/\D/g,"")};
-  return {config,menu};
-}
+  return {config,menu}}
 function buildHTML(){const {config,menu}=cleanData();
   const data="const CONFIG = "+JSON.stringify(config,null,2)+";\n\nconst MENU = "+JSON.stringify(menu,null,2)+";";
-  return APP_TEMPLATE.replace("__DATA__",data);}
+  return APP_TEMPLATE.replace("__DATA__",data)}
 function preview(){if(!validate())return;const b=new Blob([buildHTML()],{type:"text/html"});window.open(URL.createObjectURL(b),"_blank")}
 function download(){if(!validate())return;const b=new Blob([buildHTML()],{type:"text/html"});
   const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="index.html";a.click();
-  showMsg("Готово! Файл index.html сохранён. Залей его в папку ресторана на GitHub.",true)}
+  showMsg("Готово! Залей index.html в папку ресторана на GitHub.",true)}
 
-/* ====== ШАБЛОН СТРАНИЦЫ (__DATA__ → CONFIG и MENU) ====== */
 const APP_TEMPLATE = `<!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -223,16 +196,24 @@ const APP_TEMPLATE = `<!DOCTYPE html>
 <title>Меню</title>
 <style>
   :root{--bg:#FBF7F1;--card:#fff;--ink:#1C1714;--muted:#7A6F64;--line:#E7DDCD;--ph:#FBEFE2;
-    --accent:#E0341E;--acc-ink:#fff;--shadow:0 8px 30px rgba(0,0,0,.18);--col:600px;--max:#3A6DF0;--tg:#2AABEE;--wa:#25D366;}
+    --accent:#E0341E;--acc-ink:#fff;--price:#E0341E;--price-ink:#fff;--shadow:0 8px 30px rgba(0,0,0,.18);--col:600px;--max:#3A6DF0;--tg:#2AABEE;--wa:#25D366;}
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{margin:0;padding:0}
   body{background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,system-ui,sans-serif;line-height:1.45;padding-bottom:122px}
   .wrap{max-width:var(--col);margin:0 auto;position:relative}
-  header{text-align:center;padding:26px 20px 20px;background:var(--card);border-bottom:3px solid var(--accent)}
-  .brand{font-size:30px;font-weight:800;letter-spacing:-.5px;color:var(--accent);line-height:1.05}
-  .tagline{font-size:13.5px;color:var(--muted);margin-top:8px}
+  header{position:relative;text-align:center;padding:28px 20px 20px;background:var(--card);border-bottom:3px solid var(--accent)}
+  .mark{margin:0 auto 4px;display:none}
+  .brand{font-size:32px;font-weight:800;letter-spacing:-.5px;color:var(--accent);line-height:1.05}
+  .brand.serif{font-family:Georgia,"Times New Roman",serif;font-weight:700;letter-spacing:6px}
+  .brand-sub{font-size:12px;letter-spacing:8px;color:var(--accent);opacity:.85;margin-top:6px;display:none}
+  .brand-sub.show{display:block}
+  .brand-sub::before,.brand-sub::after{content:"—";margin:0 7px;opacity:.5}
+  .tagline{font-size:13.5px;color:var(--muted);margin-top:10px}
+  .tagline.serif{font-family:Georgia,serif;font-style:italic}
   .info{display:flex;gap:10px;margin-top:15px;flex-wrap:wrap;justify-content:center;font-size:12px;color:var(--muted)}
   .info span{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);padding:6px 12px;border-radius:999px}
+  .halal{position:absolute;top:16px;right:16px;font-size:8.5px;letter-spacing:1px;color:var(--accent);border:1px solid var(--accent);border-radius:50%;width:42px;height:42px;display:none;place-items:center;text-align:center;line-height:1.1;opacity:.85}
+  .halal.show{display:grid}
   nav{position:sticky;top:0;z-index:30;background:var(--bg);border-bottom:1px solid var(--line);overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
   nav::-webkit-scrollbar{display:none}
   .cats{display:flex;gap:8px;padding:12px 20px;width:max-content}
@@ -244,11 +225,10 @@ const APP_TEMPLATE = `<!DOCTYPE html>
   .item{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:13px;margin-bottom:11px;display:flex;gap:13px;align-items:center}
   .item-img{width:66px;height:66px;border-radius:12px;object-fit:cover;flex:none}
   .item-ph{width:66px;height:66px;border-radius:12px;flex:none;display:grid;place-items:center;background:var(--ph);border:1px solid var(--line)}
-  .item-body{flex:1;min-width:0}
-  .item-name{font-size:15.5px;font-weight:700;margin:0}
+  .item-body{flex:1;min-width:0}.item-name{font-size:15.5px;font-weight:700;margin:0}
   .item-desc{font-size:12.5px;color:var(--muted);margin:4px 0 0;line-height:1.35}
   .item-side{display:flex;flex-direction:column;align-items:flex-end;gap:10px}
-  .price{font-weight:800;font-size:13.5px;background:var(--accent);color:var(--acc-ink);padding:5px 11px;border-radius:999px;white-space:nowrap}
+  .price{font-weight:800;font-size:13.5px;background:var(--price);color:var(--price-ink);padding:5px 11px;border-radius:999px;white-space:nowrap}
   .add{width:40px;height:40px;border-radius:12px;border:none;cursor:pointer;background:var(--accent);color:var(--acc-ink);font-size:24px;font-weight:700;display:grid;place-items:center;line-height:1;transition:.12s}
   .add:active{transform:scale(.92)}
   .stepper{display:flex;align-items:center;border:1.5px solid var(--accent);border-radius:12px;overflow:hidden}
@@ -269,25 +249,19 @@ const APP_TEMPLATE = `<!DOCTYPE html>
   .sheet-scroll{overflow-y:auto;padding:0 20px;flex:1}
   .ticket{background:var(--card);border-radius:14px;border:1px solid var(--line);padding:16px;margin-bottom:16px}
   .tear{border:none;border-top:1px dashed var(--line);margin:12px 0}
-  .t-row{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:14px;padding:7px 0}
-  .t-row .t-name{flex:1}
+  .t-row{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:14px;padding:7px 0}.t-row .t-name{flex:1}
   .t-row .t-q{color:var(--accent);font-weight:800;margin-right:8px}
   .t-mini{display:flex;border:1px solid var(--line);border-radius:9px;overflow:hidden;margin-left:8px}
   .t-mini button{width:28px;height:28px;border:none;background:var(--bg);color:var(--accent);font-weight:700;cursor:pointer;font-size:16px}
   .t-sum{display:flex;justify-content:space-between;font-size:14px;color:var(--muted);padding:3px 0}
   .t-total{display:flex;justify-content:space-between;font-size:18px;font-weight:800;padding-top:6px}
   .empty{text-align:center;color:var(--muted);padding:40px 10px;font-size:15px}
-  .field{margin-bottom:13px}
-  .field label{display:block;font-size:13px;font-weight:700;margin-bottom:6px}
-  .field .req{color:var(--accent)}
+  .field{margin-bottom:13px}.field label{display:block;font-size:13px;font-weight:700;margin-bottom:6px}.field .req{color:var(--accent)}
   .field input,.field textarea{width:100%;border:1.5px solid var(--line);border-radius:12px;padding:13px 14px;font-size:16px;font-family:inherit;background:var(--card);color:var(--ink)}
-  .field input:focus,.field textarea:focus{outline:none;border-color:var(--accent)}
-  .field textarea{resize:vertical;min-height:60px}
+  .field input:focus,.field textarea:focus{outline:none;border-color:var(--accent)}.field textarea{resize:vertical;min-height:60px}
   .field.invalid input{border-color:var(--accent)}
-  .err{color:var(--accent);font-size:13px;margin:8px 0 2px;display:none;font-weight:600}
-  .err.show{display:block}
-  .done-h{font-size:18px;font-weight:800;margin:4px 0 2px;color:var(--accent)}
-  .done-sub{font-size:13.5px;color:var(--muted);margin:0 0 12px}
+  .err{color:var(--accent);font-size:13px;margin:8px 0 2px;display:none;font-weight:600}.err.show{display:block}
+  .done-h{font-size:18px;font-weight:800;margin:4px 0 2px;color:var(--accent)}.done-sub{font-size:13.5px;color:var(--muted);margin:0 0 12px}
   .order-box{background:var(--card);border:1px dashed var(--line);border-radius:12px;padding:14px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;white-space:pre-wrap;color:var(--ink);margin-bottom:10px}
   .copy-btn{width:100%;background:transparent;color:var(--accent);border:1.5px solid var(--accent);border-radius:11px;padding:12px;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:16px}
   .ch-title{font-size:12px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
@@ -304,7 +278,10 @@ const APP_TEMPLATE = `<!DOCTYPE html>
 <body>
 <div class="wrap">
   <header>
+    <div class="halal" id="halal">HALAL<br>100%</div>
+    <div id="logoWrap"></div>
     <div class="brand" id="brandName"></div>
+    <div class="brand-sub" id="brandSub"></div>
     <div class="tagline" id="tagline"></div>
     <div class="info"><span id="infoTime"></span><span id="infoDelivery"></span><span id="infoMin"></span></div>
   </header>
@@ -312,8 +289,7 @@ const APP_TEMPLATE = `<!DOCTYPE html>
   <main id="menu"></main>
 </div>
 <div class="tray" id="tray"><button class="tray-btn" type="button" onclick="openSheet()">
-  <span class="tray-left"><span class="tray-count" id="trayCount">0</span>Посмотреть заказ</span>
-  <span class="tray-total" id="trayTotal">0</span></button></div>
+  <span class="tray-left"><span class="tray-count" id="trayCount">0</span>Посмотреть заказ</span><span class="tray-total" id="trayTotal">0</span></button></div>
 <div class="overlay" id="overlay" onclick="closeSheet()"></div>
 <div class="sheet" id="sheet" role="dialog" aria-label="Ваш заказ">
   <div class="sheet-head"><h2 id="sheetTitle">Ваш заказ</h2><button class="close" type="button" onclick="closeSheet()" aria-label="Закрыть">×</button></div>
@@ -322,7 +298,7 @@ const APP_TEMPLATE = `<!DOCTYPE html>
     <div id="formBlock">
       <div class="field" id="f-name"><label>Имя <span class="req">*</span></label><input id="inName" type="text" placeholder="Как вас зовут" autocomplete="name"></div>
       <div class="field" id="f-phone"><label>Телефон <span class="req">*</span></label><input id="inPhone" type="tel" inputmode="tel" placeholder="+7 ___ ___ __ __" autocomplete="tel"></div>
-      <div class="field" id="f-addr"><label>Адрес доставки <span class="req">*</span></label><input id="inAddr" type="text" placeholder="Улица, дом, квартира, этаж" autocomplete="street-address"></div>
+      <div class="field" id="f-addr"><label>Адрес доставки <span class="req">*</span></label><input id="inAddr" type="text" placeholder="Улица, дом, квартира" autocomplete="street-address"></div>
       <div class="field"><label>Комментарий</label><textarea id="inNote" placeholder="Без лука, позвонить за 10 минут"></textarea></div>
       <div class="err" id="errBox"></div>
     </div>
@@ -331,8 +307,7 @@ const APP_TEMPLATE = `<!DOCTYPE html>
       <p class="done-sub">Открой чат ресторана и вставь заказ (долгое нажатие → «Вставить»), затем отправь.</p>
       <div class="order-box" id="orderText"></div>
       <button class="copy-btn" type="button" id="copyBtn">📋 Скопировать ещё раз</button>
-      <div class="ch-title">Открыть чат ресторана:</div>
-      <div class="channels" id="channels"></div>
+      <div class="ch-title">Открыть чат ресторана:</div><div class="channels" id="channels"></div>
     </div>
   </div>
   <div class="sheet-foot"><button class="send" id="mainBtn" type="button">Оформить заказ</button>
@@ -341,17 +316,24 @@ const APP_TEMPLATE = `<!DOCTYPE html>
 <script>
 __DATA__
 /*DATA_END*/
-const TH={light:{bg:"#FBF7F1",card:"#FFFFFF",ink:"#1C1714",muted:"#7A6F64",line:"#E7DDCD",ph:"#FBEFE2"},
-  dark:{bg:"#122019",card:"#1B2C24",ink:"#F0EEE8",muted:"#9AA89E",line:"rgba(255,255,255,.13)",ph:"#0E1A15"}};
-const t=TH[CONFIG.theme]||TH.light;const ACC=CONFIG.accent||"#E0341E";
-function accInk(h){h=(""+h).replace("#","");if(h.length<6)return "#ffffff";
-  const r=parseInt(h.substr(0,2),16),g=parseInt(h.substr(2,2),16),b=parseInt(h.substr(4,2),16);
-  return (0.299*r+0.587*g+0.114*b)>150?"#1A1A1A":"#ffffff";}
+function hx(h){h=(""+h).replace("#","");return [parseInt(h.substr(0,2),16),parseInt(h.substr(2,2),16),parseInt(h.substr(4,2),16)]}
+function toHex(a){return "#"+a.map(x=>Math.max(0,Math.min(255,Math.round(x))).toString(16).padStart(2,"0")).join("")}
+function mix(hex,tgt,amt){const c=hx(hex);return toHex(c.map(x=>x+(tgt-x)*amt))}
+function accInk(h){const c=hx(h);return (0.299*c[0]+0.587*c[1]+0.114*c[2])>150?"#1A1A1A":"#ffffff"}
+const ACC=CONFIG.accent||"#E0341E";const PRICE=CONFIG.priceColor||ACC;
 const rs=document.documentElement.style;
-rs.setProperty("--bg",t.bg);rs.setProperty("--card",t.card);rs.setProperty("--ink",t.ink);
-rs.setProperty("--muted",t.muted);rs.setProperty("--line",t.line);rs.setProperty("--ph",t.ph);
+if(CONFIG.theme==="dark"){const bg=CONFIG.bg||"#122019";
+  rs.setProperty("--bg",bg);rs.setProperty("--card",mix(bg,255,.07));rs.setProperty("--ink","#F0EEE8");
+  rs.setProperty("--muted","#9AA89E");rs.setProperty("--line","rgba(255,255,255,.13)");rs.setProperty("--ph",mix(bg,0,.4));}
 rs.setProperty("--accent",ACC);rs.setProperty("--acc-ink",accInk(ACC));
+rs.setProperty("--price",PRICE);rs.setProperty("--price-ink",accInk(PRICE));
 const G=ACC;
+if(CONFIG.logo){document.getElementById("logoWrap").innerHTML='<svg class="mark" style="display:block" width="84" height="52" viewBox="0 0 100 62" fill="none" stroke="'+G+'" stroke-width="2.4" stroke-linecap="round"><path d="M9 53 A41 41 0 0 1 91 53 Z"/><line x1="50" y1="53" x2="30" y2="18"/><line x1="50" y1="53" x2="50" y2="12"/><line x1="50" y1="53" x2="70" y2="18"/><circle cx="50" cy="27" r="3.2" fill="'+G+'" stroke="none"/><circle cx="37" cy="42" r="3.2" fill="'+G+'" stroke="none"/><circle cx="63" cy="42" r="3.2" fill="'+G+'" stroke="none"/></svg>'}
+const bEl=document.getElementById("brandName");bEl.textContent=CONFIG.name;if(CONFIG.serif)bEl.classList.add("serif");
+if(CONFIG.sub){const s=document.getElementById("brandSub");s.textContent=CONFIG.sub;s.classList.add("show")}
+const tg=document.getElementById("tagline");tg.textContent=CONFIG.tagline||"";if(CONFIG.serif)tg.classList.add("serif");
+if(CONFIG.halal)document.getElementById("halal").classList.add("show");
+
 const ICONS={
   pizza:'<svg width="40" height="40" viewBox="0 0 48 48" fill="none" stroke="'+G+'" stroke-width="2"><path d="M24 6l16 31c-10 5-22 5-32 0L24 6z"/><circle cx="20" cy="25" r="2" fill="'+G+'" stroke="none"/><circle cx="28" cy="28" r="2" fill="'+G+'" stroke="none"/></svg>',
   burger:'<svg width="40" height="40" viewBox="0 0 48 48" fill="none" stroke="'+G+'" stroke-width="2"><path d="M12 19c0-7 24-7 24 0"/><line x1="11" y1="23" x2="37" y2="23"/><path d="M12 27h24c0 5-24 5-24 0z"/></svg>',
@@ -368,79 +350,64 @@ const cart={};const byId={};
 MENU.forEach(s=>s.items.forEach(i=>byId[i.id]=i));
 const cur=CONFIG.currency;const money=n=>n.toLocaleString("ru-RU")+" "+cur;
 const mainBtn=document.getElementById("mainBtn");
-document.getElementById("brandName").textContent=CONFIG.name;
-document.getElementById("tagline").textContent=CONFIG.tagline||"";
 document.getElementById("infoTime").textContent="⏱ "+CONFIG.workTime;
 document.getElementById("infoDelivery").textContent=CONFIG.deliveryFee>0?"🛵 Доставка "+money(CONFIG.deliveryFee):"🛵 Доставка бесплатно";
-const minEl=document.getElementById("infoMin");
-if(CONFIG.minOrder>0){minEl.textContent="🧾 Минимум "+money(CONFIG.minOrder)}else{minEl.style.display="none"}
+const minEl=document.getElementById("infoMin");if(CONFIG.minOrder>0){minEl.textContent="🧾 Минимум "+money(CONFIG.minOrder)}else{minEl.style.display="none"}
 const catsEl=document.getElementById("cats");
-MENU.forEach((s,idx)=>{const b=document.createElement("button");b.className="cat"+(idx===0?" active":"");
-  b.textContent=s.cat;b.onclick=()=>{document.getElementById("sec-"+idx).scrollIntoView({behavior:"smooth",block:"start"})};catsEl.appendChild(b)});
+MENU.forEach((s,idx)=>{const b=document.createElement("button");b.className="cat"+(idx===0?" active":"");b.textContent=s.cat;b.onclick=()=>{document.getElementById("sec-"+idx).scrollIntoView({behavior:"smooth",block:"start"})};catsEl.appendChild(b)});
 const menuEl=document.getElementById("menu");
-MENU.forEach((s,idx)=>{const sec=document.createElement("section");sec.id="sec-"+idx;
-  sec.innerHTML='<h2 class="sec-title">'+s.cat+'</h2>';
+MENU.forEach((s,idx)=>{const sec=document.createElement("section");sec.id="sec-"+idx;sec.innerHTML='<h2 class="sec-title">'+s.cat+'</h2>';
   s.items.forEach(it=>{const row=document.createElement("div");row.className="item";
     row.innerHTML=(it.img?'<img class="item-img" src="'+it.img+'" alt="">':'<div class="item-ph">'+catIcon(s.cat)+'</div>')+
       '<div class="item-body"><p class="item-name">'+it.name+'</p>'+(it.desc?'<p class="item-desc">'+it.desc+'</p>':'')+'</div>'+
       '<div class="item-side"><span class="price">'+money(it.price)+'</span><div id="ctrl-'+it.id+'"></div></div>';
     sec.appendChild(row);menuEl.appendChild(sec)})});
 const catBtns=[...catsEl.children];
-const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){const i=+e.target.id.split("-")[1];
-  catBtns.forEach((b,k)=>b.classList.toggle("active",k===i))}})},{rootMargin:"-55% 0px -42% 0px"});
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){const i=+e.target.id.split("-")[1];catBtns.forEach((b,k)=>b.classList.toggle("active",k===i))}})},{rootMargin:"-55% 0px -42% 0px"});
 MENU.forEach((s,idx)=>obs.observe(document.getElementById("sec-"+idx)));
 function renderCtrl(id){const el=document.getElementById("ctrl-"+id);const q=cart[id]||0;
   if(q===0){el.innerHTML='<button class="add" type="button">+</button>';el.firstChild.onclick=()=>change(id,1)}
-  else{el.innerHTML='<div class="stepper"><button type="button">−</button><span class="q">'+q+'</span><button type="button">+</button></div>';
-    const m=el.firstChild.children[0],p=el.firstChild.children[2];m.onclick=()=>change(id,-1);p.onclick=()=>change(id,1)}}
+  else{el.innerHTML='<div class="stepper"><button type="button">−</button><span class="q">'+q+'</span><button type="button">+</button></div>';const m=el.firstChild.children[0],p=el.firstChild.children[2];m.onclick=()=>change(id,-1);p.onclick=()=>change(id,1)}}
 MENU.forEach(s=>s.items.forEach(i=>renderCtrl(i.id)));
 function change(id,d){cart[id]=(cart[id]||0)+d;if(cart[id]<=0)delete cart[id];renderCtrl(id);updateTray();
   if(document.getElementById("sheet").classList.contains("show")&&document.getElementById("resultBlock").style.display==="none")renderTicket()}
 function subtotal(){return Object.entries(cart).reduce((s,[id,q])=>s+byId[id].price*q,0)}
 function count(){return Object.values(cart).reduce((s,q)=>s+q,0)}
-function updateTray(){const n=count();document.getElementById("trayCount").textContent=n;
-  document.getElementById("trayTotal").textContent=money(subtotal());document.getElementById("tray").classList.toggle("show",n>0)}
+function updateTray(){const n=count();document.getElementById("trayCount").textContent=n;document.getElementById("trayTotal").textContent=money(subtotal());document.getElementById("tray").classList.toggle("show",n>0)}
 function openSheet(){backToCart();renderTicket();document.getElementById("overlay").classList.add("show");document.getElementById("sheet").classList.add("show");document.body.style.overflow="hidden"}
 function closeSheet(){document.getElementById("overlay").classList.remove("show");document.getElementById("sheet").classList.remove("show");document.body.style.overflow=""}
 function renderTicket(){const t2=document.getElementById("ticket");const ids=Object.keys(cart);
   if(ids.length===0){t2.innerHTML='<div class="empty">Корзина пуста 🍕</div>';document.getElementById("formBlock").style.display="none";mainBtn.disabled=true;return}
   document.getElementById("formBlock").style.display="";mainBtn.disabled=false;
-  let rows="";ids.forEach(id=>{const it=byId[id],q=cart[id];
-    rows+='<div class="t-row"><span class="t-name"><span class="t-q">'+q+'×</span>'+it.name+'</span><span>'+money(it.price*q)+'</span>'+
-      '<span class="t-mini"><button type="button" onclick="change(\\''+id+'\\',-1)">−</button><button type="button" onclick="change(\\''+id+'\\',1)">+</button></span></div>'});
+  let rows="";ids.forEach(id=>{const it=byId[id],q=cart[id];rows+='<div class="t-row"><span class="t-name"><span class="t-q">'+q+'×</span>'+it.name+'</span><span>'+money(it.price*q)+'</span><span class="t-mini"><button type="button" onclick="change(\\''+id+'\\',-1)">−</button><button type="button" onclick="change(\\''+id+'\\',1)">+</button></span></div>'});
   const sub=subtotal(),dlv=CONFIG.deliveryFee||0,total=sub+dlv;
-  let sums='<div class="t-sum"><span>Сумма</span><span>'+money(sub)+'</span></div>';
-  if(dlv>0)sums+='<div class="t-sum"><span>Доставка</span><span>'+money(dlv)+'</span></div>';
+  let sums='<div class="t-sum"><span>Сумма</span><span>'+money(sub)+'</span></div>';if(dlv>0)sums+='<div class="t-sum"><span>Доставка</span><span>'+money(dlv)+'</span></div>';
   sums+='<div class="t-total"><span>Итого</span><span>'+money(total)+'</span></div>';
   t2.innerHTML='<div class="t-total" style="font-size:13px;letter-spacing:1px;color:var(--accent)">🧾 ВАШ ЗАКАЗ</div><hr class="tear">'+rows+'<hr class="tear">'+sums}
 function buildOrderText(name,phone,addr,note){const sub=subtotal(),dlv=CONFIG.deliveryFee||0,total=sub+dlv;let lines=[];
   lines.push("🧾 НОВЫЙ ЗАКАЗ — "+CONFIG.name);lines.push("————————————");
   Object.keys(cart).forEach(id=>{const it=byId[id],q=cart[id];lines.push(q+"× "+it.name+" — "+money(it.price*q))});
   lines.push("————————————");lines.push("Сумма: "+money(sub));if(dlv>0)lines.push("Доставка: "+money(dlv));
-  lines.push("ИТОГО: "+money(total));lines.push("");lines.push("👤 "+name);lines.push("📞 "+phone);lines.push("📍 "+addr);if(note)lines.push("💬 "+note);
-  return lines.join("\\n");}
+  lines.push("ИТОГО: "+money(total));lines.push("");lines.push("👤 "+name);lines.push("📞 "+phone);lines.push("📍 "+addr);if(note)lines.push("💬 "+note);return lines.join("\\n")}
 function copyText(x){try{navigator.clipboard.writeText(x)}catch(e){const ta=document.createElement("textarea");ta.value=x;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.focus();ta.select();try{document.execCommand("copy")}catch(_){}document.body.removeChild(ta)}}
 function renderChannels(text){const c=document.getElementById("channels");c.innerHTML="";const enc=encodeURIComponent(text);
   if(CONFIG.max){const a=document.createElement("a");a.className="ch ch-max";a.href=CONFIG.max;a.target="_blank";a.rel="noopener";a.textContent="Открыть МАКС";c.appendChild(a)}
   if(CONFIG.telegram){const a=document.createElement("a");a.className="ch ch-tg";a.href="https://t.me/"+CONFIG.telegram.replace(/^@/,"");a.target="_blank";a.rel="noopener";a.textContent="Открыть Telegram";c.appendChild(a)}
   if(CONFIG.whatsapp){const a=document.createElement("a");a.className="ch ch-wa";a.href="https://wa.me/"+CONFIG.whatsapp+"?text="+enc;a.target="_blank";a.rel="noopener";a.textContent="Открыть WhatsApp";c.appendChild(a)}}
-function orderConfirm(){
-  const name=document.getElementById("inName").value.trim();const phone=document.getElementById("inPhone").value.trim();
+function orderConfirm(){const name=document.getElementById("inName").value.trim();const phone=document.getElementById("inPhone").value.trim();
   const addr=document.getElementById("inAddr").value.trim();const note=document.getElementById("inNote").value.trim();
   ["f-name","f-phone","f-addr"].forEach(f=>document.getElementById(f).classList.remove("invalid"));
   const err=document.getElementById("errBox");err.classList.remove("show");const sub=subtotal();if(sub===0)return;
   if(CONFIG.minOrder>0&&sub<CONFIG.minOrder){err.textContent="Минимальный заказ — "+money(CONFIG.minOrder)+". Добавьте ещё на "+money(CONFIG.minOrder-sub)+".";err.classList.add("show");return}
   let bad=[];if(!name)bad.push("f-name");if(!phone)bad.push("f-phone");if(!addr)bad.push("f-addr");
-  if(bad.length){bad.forEach(f=>document.getElementById(f).classList.add("invalid"));err.textContent="Заполните имя, телефон и адрес доставки.";err.classList.add("show");document.getElementById(bad[0]).scrollIntoView({behavior:"smooth",block:"center"});return}
-  const text=buildOrderText(name,phone,addr,note);copyText(text);
-  document.getElementById("orderText").textContent=text;renderChannels(text);
-  document.getElementById("ticket").style.display="none";document.getElementById("formBlock").style.display="none";
-  document.getElementById("resultBlock").style.display="";document.getElementById("sheetTitle").textContent="Заказ готов";
-  document.getElementById("footNote").textContent="Скопировано. Вставь в чат ресторана и отправь.";
-  mainBtn.textContent="← Изменить заказ";mainBtn.onclick=backToCart;document.getElementById("sheetScroll").scrollTop=0;}
+  if(bad.length){bad.forEach(f=>document.getElementById(f).classList.add("invalid"));err.textContent="Заполните имя, телефон и адрес.";err.classList.add("show");document.getElementById(bad[0]).scrollIntoView({behavior:"smooth",block:"center"});return}
+  const text=buildOrderText(name,phone,addr,note);copyText(text);document.getElementById("orderText").textContent=text;renderChannels(text);
+  document.getElementById("ticket").style.display="none";document.getElementById("formBlock").style.display="none";document.getElementById("resultBlock").style.display="";
+  document.getElementById("sheetTitle").textContent="Заказ готов";document.getElementById("footNote").textContent="Скопировано. Вставь в чат и отправь.";
+  mainBtn.textContent="← Изменить заказ";mainBtn.onclick=backToCart;document.getElementById("sheetScroll").scrollTop=0}
 function backToCart(){document.getElementById("resultBlock").style.display="none";document.getElementById("ticket").style.display="";
   document.getElementById("sheetTitle").textContent="Ваш заказ";document.getElementById("footNote").textContent="Соберём заказ и скопируем — останется вставить в чат";
-  mainBtn.textContent="Оформить заказ";mainBtn.onclick=orderConfirm;renderTicket();}
+  mainBtn.textContent="Оформить заказ";mainBtn.onclick=orderConfirm;renderTicket()}
 document.getElementById("copyBtn").onclick=()=>copyText(document.getElementById("orderText").textContent);
 mainBtn.onclick=orderConfirm;updateTray();
 <\/script>
