@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Дашборд · мои рестораны</title>
+<style>
+  :root{--bg:#0F1115;--card:#1A1D24;--card2:#20242D;--ink:#F2EFEA;--muted:#8C93A1;
+    --accent:#E0341E;--ok:#27C26B;--amber:#F2A93B;--line:#2A2F3A;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,system-ui,sans-serif;line-height:1.45}
+  .top{padding:18px 18px 6px;max-width:820px;margin:0 auto}
+  .top h1{font-size:20px;margin:0;font-weight:800}
+  .top p{font-size:12.5px;color:var(--muted);margin:6px 0 0}
+  .wrap{max-width:820px;margin:0 auto;padding:14px 16px 60px}
+
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px}
+  @media(max-width:520px){.stats{grid-template-columns:1fr}}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+  .stat .n{font-size:28px;font-weight:800;letter-spacing:-1px}
+  .stat .l{font-size:12px;color:var(--muted);margin-top:3px;text-transform:uppercase;letter-spacing:.5px}
+  .stat.mrr .n{color:var(--ok)}
+  .stat.act .n{color:var(--amber)}
+
+  .add{width:100%;background:var(--accent);color:#fff;border:none;border-radius:12px;padding:13px;
+    font-size:15px;font-weight:800;cursor:pointer;margin-bottom:16px}
+  .rest{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
+  .rest-top{display:flex;gap:8px;align-items:center;margin-bottom:10px}
+  .rest-top .name{flex:1}
+  .rest input,.rest select{width:100%;background:var(--card2);border:1px solid var(--line);color:var(--ink);
+    border-radius:9px;padding:10px 11px;font-size:14px;font-family:inherit}
+  .rest input:focus,.rest select:focus{outline:none;border-color:var(--accent)}
+  .rest .name input{font-weight:700;font-size:15px}
+  .row2{display:grid;grid-template-columns:1fr 110px 130px;gap:8px;margin-bottom:8px}
+  @media(max-width:520px){.row2{grid-template-columns:1fr}}
+  .lab{font-size:11px;color:var(--muted);margin:0 0 4px;display:block}
+  .note input{font-size:13px}
+  .acts{display:flex;gap:8px;margin-top:10px}
+  .open{flex:1;text-align:center;text-decoration:none;background:var(--card2);border:1px solid var(--line);
+    color:var(--ink);border-radius:9px;padding:9px;font-size:13px;font-weight:600}
+  .open:hover{border-color:var(--accent)}
+  .del{background:none;border:1px solid var(--line);color:var(--muted);border-radius:9px;padding:9px 14px;
+    font-size:13px;cursor:pointer}
+  .del:hover{border-color:var(--accent);color:var(--accent)}
+  .badge{font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;flex:none}
+  .b-active{background:rgba(39,194,107,.15);color:var(--ok)}
+  .b-test{background:rgba(242,169,59,.15);color:var(--amber)}
+  .b-pause{background:rgba(140,147,161,.15);color:var(--muted)}
+  .empty{text-align:center;color:var(--muted);padding:50px 16px;font-size:15px}
+  .tools{display:flex;gap:10px;margin-top:8px;flex-wrap:wrap}
+  .tools a{color:var(--muted);font-size:12.5px;text-decoration:underline}
+  .footnote{background:var(--card);border:1px dashed var(--line);border-radius:12px;padding:13px 15px;
+    font-size:12.5px;color:var(--muted);margin-top:22px}
+</style>
+</head>
+<body>
+<div class="top">
+  <h1>📊 Мои рестораны</h1>
+  <p>Личный учёт. Данные вносишь сам — это твой реестр клиентов и дохода.</p>
+</div>
+<div class="wrap">
+  <div class="stats">
+    <div class="stat"><div class="n" id="sTotal">0</div><div class="l">Всего ресторанов</div></div>
+    <div class="stat act"><div class="n" id="sActive">0</div><div class="l">Активных</div></div>
+    <div class="stat mrr"><div class="n" id="sMrr">0 ₽</div><div class="l">Доход в месяц</div></div>
+  </div>
+
+  <button class="add" type="button" onclick="addRest()">+ Добавить ресторан</button>
+  <div id="list"></div>
+
+  <div class="footnote">
+    Этот дашборд показывает то, что ты внёс сам. Автоматически считать заказы, посещения и «онлайн ли меню» —
+    нельзя без бэкенда (сервера с базой). Это следующий шаг, когда пойдут платящие клиенты. Пока количество
+    заказов берёшь из WhatsApp.
+    <div class="tools"><a href="admin.html">→ Открыть редактор меню</a></div>
+  </div>
+</div>
+
+<script>
+const KEY="hisravDashboard";
+let data=load()||[];
+function load(){try{return JSON.parse(localStorage.getItem(KEY))}catch(e){return null}}
+function save(){localStorage.setItem(KEY,JSON.stringify(data));stats()}
+function nid(){return "r"+Math.random().toString(36).slice(2,7)}
+
+function addRest(){data.push({id:nid(),name:"",url:"",whatsapp:"",status:"тест",fee:0,note:""});save();render()}
+function delRest(i){if(confirm("Удалить ресторан из реестра?")){data.splice(i,1);save();render()}}
+
+const listEl=document.getElementById("list");
+function render(){
+  if(data.length===0){listEl.innerHTML='<div class="empty">Пока пусто.<br>Добавь первый ресторан 👆</div>';stats();return}
+  listEl.innerHTML="";
+  data.forEach((r,i)=>{
+    const card=document.createElement("div");card.className="rest";
+    card.innerHTML=
+      '<div class="rest-top">'+
+        '<div class="name" style="flex:1"><input placeholder="Название ресторана" value="'+esc(r.name)+'" data-k="name"></div>'+
+        '<span class="badge '+badge(r.status)+'">'+r.status+'</span>'+
+      '</div>'+
+      '<div class="row2">'+
+        '<div><span class="lab">Ссылка на меню</span><input placeholder="https://...github.io/menu/burger/" value="'+esc(r.url)+'" data-k="url"></div>'+
+        '<div><span class="lab">Статус</span><select data-k="status">'+
+          opt("тест",r.status)+opt("активен",r.status)+opt("пауза",r.status)+'</select></div>'+
+        '<div><span class="lab">Оплата ₽/мес</span><input inputmode="numeric" placeholder="0" value="'+(r.fee||"")+'" data-k="fee"></div>'+
+      '</div>'+
+      '<div class="note"><span class="lab">Заметка</span><input placeholder="Контакт, что обсудили, когда платит..." value="'+esc(r.note)+'" data-k="note"></div>'+
+      '<div class="acts">'+
+        '<a class="open" href="'+(r.url||"#")+'" target="_blank">Открыть меню</a>'+
+        '<button class="del" type="button" data-del="'+i+'">Удалить</button>'+
+      '</div>';
+    // привязка инпутов
+    card.querySelectorAll("[data-k]").forEach(el=>{
+      el.oninput=()=>{let v=el.value;if(el.dataset.k==="fee"){v=parseInt(v.replace(/\D/g,""))||0}
+        r[el.dataset.k]=v;save();
+        if(el.dataset.k==="status"){render()}};
+    });
+    card.querySelector("[data-del]").onclick=()=>delRest(i);
+    listEl.appendChild(card);
+  });
+  stats();
+}
+function opt(v,cur){return '<option'+(v===cur?" selected":"")+'>'+v+'</option>'}
+function badge(s){return s==="активен"?"b-active":s==="пауза"?"b-pause":"b-test"}
+function esc(s){return (s||"").replace(/"/g,"&quot;")}
+
+function stats(){
+  document.getElementById("sTotal").textContent=data.length;
+  const act=data.filter(r=>r.status==="активен");
+  document.getElementById("sActive").textContent=act.length;
+  const mrr=act.reduce((s,r)=>s+(parseInt(r.fee)||0),0);
+  document.getElementById("sMrr").textContent=mrr.toLocaleString("ru-RU")+" ₽";
+}
+render();
+</script>
+</body>
+</html>
