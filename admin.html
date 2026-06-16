@@ -30,7 +30,12 @@
   .thumb.has{border-style:solid}
   .thumb-x{position:absolute;top:-7px;right:-7px;width:22px;height:22px;border-radius:50%;border:2px solid #fff;background:var(--accent);color:#fff;font-size:11px;cursor:pointer;display:grid;place-items:center;line-height:1;padding:0}
   .item-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
-  .item-body input{padding:9px 10px;font-size:14px}.item-body .r{display:flex;gap:6px;align-items:center}.item-body .r .price{width:90px;flex:none}
+  .item-body input{padding:9px 10px;font-size:14px}
+  .pricing{display:flex;flex-direction:column;gap:6px;margin-top:2px}
+  .srow{display:flex;gap:6px;align-items:center}
+  .srow input.price{width:82px;flex:none}.srow input.lbl{flex:1}
+  .linkbtn{background:none;border:none;color:var(--accent);font-size:12.5px;font-weight:700;cursor:pointer;text-align:left;padding:3px 2px;width:max-content}
+  .item-ctrls{display:flex;flex-direction:column;gap:5px;justify-content:center}
   .ib{width:34px;height:34px;border:1px solid var(--line);background:#fff;border-radius:8px;cursor:pointer;font-size:15px;color:var(--muted);display:grid;place-items:center;flex:none}
   .ib:hover{border-color:var(--accent);color:var(--accent)}.ib.del:hover{background:#fdeeec}
   .addbtn{background:none;border:1.5px dashed var(--line);color:var(--muted);border-radius:10px;padding:9px;width:100%;cursor:pointer;font-size:13.5px;font-weight:600}
@@ -62,7 +67,7 @@
     <div class="grid">
       <div><label>Тема</label><select id="c_theme"><option value="light">Светлая</option><option value="dark">Тёмная</option></select></div>
       <div><label>Цвет фона (тёмная тема)</label><input id="c_bg" type="color"></div>
-      <div><label>Фирменный цвет (логотип, кнопки)</label><input id="c_accent" type="color"></div>
+      <div><label>Фирменный цвет</label><input id="c_accent" type="color"></div>
       <div><label>Цвет ценника</label><input id="c_price" type="color"></div>
     </div>
     <label class="chk"><input type="checkbox" id="c_logo"> Логотип-пицца над названием</label>
@@ -104,23 +109,26 @@ function defConfig(){return {name:PNAME||RID||"MONZA",sub:"PIZZA",tagline:"Вк�
   currency:"₽",deliveryFee:0,minOrder:0,workTime:"40–60 мин",
   phone:"",address:"",openHours:"",yandex:"",max:"",telegram:"",whatsapp:PWA}}
 function DEFAULT_DRAFT(){return {config:defConfig(),
-  menu:[{cat:"Пицца",items:[{id:nid(),name:"Пепперони · 25 см",desc:"Томатный соус, моцарелла, пепперони",price:580,img:""}]}]}}
+  menu:[{cat:"Пицца",items:[{id:nid(),name:"Пепперони",desc:"Томатный соус, моцарелла, пепперони",img:"",sizes:[{label:"25 см",price:580},{label:"35 см",price:780}]}]}]}}
 function nid(){return "i"+Math.random().toString(36).slice(2,8)}
+function el(t,c){const e=document.createElement(t);if(c)e.className=c;return e}
+function toInt(v){return parseInt((""+v).replace(/\D/g,""))||0}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(draft));flash("✓ сохранено")}catch(e){flash("⚠ много фото — сохрани меню кнопкой ниже")}}
 function load(){try{return JSON.parse(localStorage.getItem(KEY))}catch(e){return null}}
 let flashT;function flash(t){const s=document.getElementById("saved");s.textContent=t;clearTimeout(flashT);flashT=setTimeout(()=>s.textContent="сохраняется автоматически",1500)}
 
 const TEXTKEYS=[["c_name","name"],["c_sub","sub"],["c_tagline","tagline"],["c_theme","theme"],["c_bg","bg"],
  ["c_accent","accent"],["c_price","priceColor"],["c_time","workTime"],["c_cur","currency"],
- ["c_dlv","deliveryFee"],["c_min","minOrder"],["c_phone","phone"],["c_addr","address"],["c_hours","openHours"],["c_yx","yandex"],["c_max","max"],["c_tg","telegram"],["c_wa","whatsapp"]];
+ ["c_dlv","deliveryFee"],["c_min","minOrder"],["c_phone","phone"],["c_addr","address"],["c_hours","openHours"],["c_yx","yandex"],
+ ["c_max","max"],["c_tg","telegram"],["c_wa","whatsapp"]];
 const CHKKEYS=[["c_logo","logo"],["c_serif","serif"],["c_halal","halal"]];
 function bindConfig(){C=draft.config;
-  TEXTKEYS.forEach(([el,k])=>{const node=document.getElementById(el);node.value=C[k]??"";
+  TEXTKEYS.forEach(([id,k])=>{const node=document.getElementById(id);node.value=C[k]??"";
     node.oninput=()=>{let v=node.value;
       if(k==="deliveryFee"||k==="minOrder"){v=parseInt(v.replace(/\D/g,""))||0}
       if(k==="whatsapp"){v=v.replace(/\D/g,"");node.value=v}
       C[k]=v;save()};});
-  CHKKEYS.forEach(([el,k])=>{const node=document.getElementById(el);node.checked=!!C[k];node.onchange=()=>{C[k]=node.checked;save()};});}
+  CHKKEYS.forEach(([id,k])=>{const node=document.getElementById(id);node.checked=!!C[k];node.onchange=()=>{C[k]=node.checked;save()};});}
 
 function resizeImage(file,max,q,cb){const fr=new FileReader();
   fr.onload=()=>{const img=new Image();img.onload=()=>{let w=img.width,h=img.height;
@@ -129,36 +137,51 @@ function resizeImage(file,max,q,cb){const fr=new FileReader();
     cb(cv.toDataURL("image/jpeg",q))};img.src=fr.result};fr.readAsDataURL(file);}
 
 const catsEl=document.getElementById("cats");
+function mkInput(val,ph,on,cls){const i=el("input",cls);i.value=val??"";i.placeholder=ph;i.oninput=()=>on(i.value);return i}
+function ib(txt,on,cls){const b=el("button","ib"+(cls?" "+cls:""));b.type="button";b.textContent=txt;b.onclick=on;return b}
 function render(){catsEl.innerHTML="";
-  draft.menu.forEach((cat,ci)=>{const box=document.createElement("div");box.className="cat";
-    const head=document.createElement("div");head.className="cat-head";
-    const cin=document.createElement("input");cin.value=cat.cat;cin.placeholder="Категория";cin.oninput=()=>{cat.cat=cin.value;save()};head.appendChild(cin);
+  draft.menu.forEach((cat,ci)=>{const box=el("div","cat");
+    const head=el("div","cat-head");
+    const cin=el("input");cin.value=cat.cat;cin.placeholder="Категория";cin.oninput=()=>{cat.cat=cin.value;save()};head.appendChild(cin);
     head.appendChild(ib("↑",()=>moveCat(ci,-1)));head.appendChild(ib("↓",()=>moveCat(ci,1)));
     head.appendChild(ib("✕",()=>{if(confirm("Удалить категорию?")){draft.menu.splice(ci,1);save();render()}},"del"));box.appendChild(head);
-    cat.items.forEach((it,ii)=>{const row=document.createElement("div");row.className="item";
-      const photo=document.createElement("div");photo.className="thumb"+(it.img?" has":"");
-      if(it.img){photo.style.backgroundImage="url("+it.img+")";const x=document.createElement("button");x.type="button";x.className="thumb-x";x.textContent="✕";x.onclick=(e)=>{e.stopPropagation();it.img="";save();render()};photo.appendChild(x)}
+    cat.items.forEach((it,ii)=>{const row=el("div","item");
+      const photo=el("div","thumb"+(it.img?" has":""));
+      if(it.img){photo.style.backgroundImage="url("+it.img+")";const x=el("button","thumb-x");x.type="button";x.textContent="✕";x.onclick=(e)=>{e.stopPropagation();it.img="";save();render()};photo.appendChild(x)}
       else{photo.innerHTML="<span>📷</span>"}
-      photo.onclick=()=>{const fin=document.createElement("input");fin.type="file";fin.accept="image/*";fin.onchange=()=>{if(fin.files[0])resizeImage(fin.files[0],600,.72,d=>{it.img=d;save();render()})};fin.click()};
-      const body=document.createElement("div");body.className="item-body";
-      const n=mkInput(it.name,"Название блюда",v=>{it.name=v;save()});
-      const d=mkInput(it.desc,"Описание (необязательно)",v=>{it.desc=v;save()});
-      const r=document.createElement("div");r.className="r";
-      const p=mkInput(it.price,"Цена",v=>{it.price=parseInt((""+v).replace(/\D/g,""))||0;save()});p.className="price";p.inputMode="numeric";
-      r.appendChild(p);r.appendChild(ib("↑",()=>moveItem(ci,ii,-1)));r.appendChild(ib("↓",()=>moveItem(ci,ii,1)));
-      r.appendChild(ib("✕",()=>{cat.items.splice(ii,1);save();render()},"del"));
-      body.appendChild(n);body.appendChild(d);body.appendChild(r);row.appendChild(photo);row.appendChild(body);box.appendChild(row)});
-    const add=document.createElement("button");add.className="addbtn";add.type="button";add.textContent="+ блюдо";
+      photo.onclick=()=>{const fin=el("input");fin.type="file";fin.accept="image/*";fin.onchange=()=>{if(fin.files[0])resizeImage(fin.files[0],600,.72,d=>{it.img=d;save();render()})};fin.click()};
+      const body=el("div","item-body");
+      body.appendChild(mkInput(it.name,"Название блюда",v=>{it.name=v;save()}));
+      body.appendChild(mkInput(it.desc,"Описание (необязательно)",v=>{it.desc=v;save()}));
+      const pricing=el("div","pricing");
+      if(it.sizes&&it.sizes.length){
+        it.sizes.forEach((sz,si)=>{const sr=el("div","srow");
+          sr.appendChild(mkInput(sz.label,"Размер (25 см / 6 шт)",v=>{sz.label=v;save()},"lbl"));
+          sr.appendChild(mkInput(sz.price,"Цена",v=>{sz.price=toInt(v);save()},"price"));
+          sr.appendChild(ib("✕",()=>{it.sizes.splice(si,1);if(!it.sizes.length){delete it.sizes;it.price=0}save();render()},"del"));
+          pricing.appendChild(sr)});
+        const a=el("button","linkbtn");a.type="button";a.textContent="+ добавить размер";a.onclick=()=>{it.sizes.push({label:"",price:0});save();render()};pricing.appendChild(a);
+        const s1=el("button","linkbtn");s1.type="button";s1.textContent="← одна цена без размеров";s1.onclick=()=>{delete it.sizes;it.price=0;save();render()};pricing.appendChild(s1);
+      }else{
+        const sr=el("div","srow");
+        sr.appendChild(mkInput(it.price,"Цена",v=>{it.price=toInt(v);save()},"price"));
+        const a=el("button","linkbtn");a.type="button";a.textContent="+ размеры (25/35 см, шт…)";a.onclick=()=>{it.sizes=[{label:"25 см",price:it.price||0},{label:"35 см",price:0}];delete it.price;save();render()};sr.appendChild(a);
+        pricing.appendChild(sr);
+      }
+      body.appendChild(pricing);
+      const ctrls=el("div","item-ctrls");
+      ctrls.appendChild(ib("↑",()=>moveItem(ci,ii,-1)));ctrls.appendChild(ib("↓",()=>moveItem(ci,ii,1)));
+      ctrls.appendChild(ib("✕",()=>{cat.items.splice(ii,1);save();render()},"del"));
+      row.appendChild(photo);row.appendChild(body);row.appendChild(ctrls);box.appendChild(row)});
+    const add=el("button","addbtn");add.type="button";add.textContent="+ блюдо";
     add.onclick=()=>{cat.items.push({id:nid(),name:"",desc:"",price:0,img:""});save();render()};box.appendChild(add);catsEl.appendChild(box)});}
-function mkInput(val,ph,on){const i=document.createElement("input");i.value=val??"";i.placeholder=ph;i.oninput=()=>on(i.value);return i}
-function ib(txt,on,cls){const b=document.createElement("button");b.type="button";b.className="ib"+(cls?" "+cls:"");b.textContent=txt;b.onclick=on;return b}
 function moveCat(i,dir){const j=i+dir;if(j<0||j>=draft.menu.length)return;[draft.menu[i],draft.menu[j]]=[draft.menu[j],draft.menu[i]];save();render()}
 function moveItem(ci,i,dir){const arr=draft.menu[ci].items;const j=i+dir;if(j<0||j>=arr.length)return;[arr[i],arr[j]]=[arr[j],arr[i]];save();render()}
 function addCat(){draft.menu.push({cat:"Новая категория",items:[{id:nid(),name:"",desc:"",price:0,img:""}]});save();render()}
 function resetAll(){if(confirm("Стереть всё?")){localStorage.removeItem(KEY);location.reload()}}
 
 async function fetchMenu(rid){try{const res=await fetch(rid+"/index.html",{cache:"no-store"});if(!res.ok)return null;
-  const html=await res.text();let de=html.indexOf("/*DATA_END*/");if(de<0)de=html.indexOf("const G=");if(de<0)de=html.indexOf("const cart={}");
+  const html=await res.text();let de=html.indexOf("/*DATA_END*/");if(de<0)de=html.indexOf("function hx(");if(de<0)de=html.indexOf("const cart={}");
   const cs=html.indexOf("const CONFIG = "),ms=html.indexOf("const MENU = ");if(cs<0||ms<0||de<0)return null;
   const cfg=JSON.parse(html.slice(cs+15,ms).trim().replace(/;$/,""));
   const menu=JSON.parse(html.slice(ms+13,de).trim().replace(/;$/,""));
@@ -172,12 +195,16 @@ async function init(){document.getElementById("who").textContent=RID?("Меню:
   bindConfig();render();}
 
 function showMsg(t,ok){const m=document.getElementById("msg");m.textContent=t;m.className="msg show "+(ok?"ok":"err");setTimeout(()=>m.classList.remove("show"),4000)}
+function itemValid(i){if(!i.name.trim())return false;if(i.sizes&&i.sizes.length)return i.sizes.some(s=>s.label.trim()&&s.price>0);return i.price>0}
 function validate(){if(!C.name.trim()){showMsg("Укажите название");return false}
   if(!C.max.trim()&&!C.telegram.trim()&&C.whatsapp.replace(/\D/g,"").length<10){showMsg("Заполните хотя бы один канал: МАКС, Telegram или WhatsApp");return false}
-  if(!draft.menu.some(c=>c.items.some(i=>i.name.trim()&&i.price>0))){showMsg("Добавьте хотя бы одно блюдо с ценой");return false}return true}
+  if(!draft.menu.some(c=>c.items.some(itemValid))){showMsg("Добавьте хотя бы одно блюдо с ценой");return false}return true}
 function cleanData(){
-  const menu=draft.menu.map(c=>({cat:c.cat.trim(),items:c.items.filter(i=>i.name.trim()&&i.price>0)
-    .map(i=>({id:i.id,name:i.name.trim(),desc:(i.desc||"").trim(),price:i.price,img:i.img||""}))})).filter(c=>c.cat&&c.items.length);
+  const menu=draft.menu.map(c=>({cat:c.cat.trim(),items:c.items.filter(itemValid).map(i=>{
+    const base={id:i.id,name:i.name.trim(),desc:(i.desc||"").trim(),img:i.img||""};
+    if(i.sizes&&i.sizes.length){const sizes=i.sizes.filter(s=>s.label.trim()&&s.price>0).map(s=>({label:s.label.trim(),price:s.price}));base.sizes=sizes}
+    else{base.price=i.price}
+    return base})})).filter(c=>c.cat&&c.items.length);
   const config={name:C.name.trim(),sub:(C.sub||"").trim(),tagline:(C.tagline||"").trim(),theme:C.theme||"light",
     bg:C.bg||"#0E2A22",accent:C.accent||"#E0341E",priceColor:C.priceColor||C.accent||"#E0341E",
     logo:!!C.logo,serif:!!C.serif,halal:!!C.halal,currency:(C.currency||"₽").trim()||"₽",
@@ -234,11 +261,16 @@ const APP_TEMPLATE = `<!DOCTYPE html>
   .item.in{animation:rise .5s cubic-bezier(.2,.7,.2,1) forwards}
   @keyframes rise{to{opacity:1;transform:translateY(0)}}
   .item:active{transform:scale(.99)}
+  .item.sized{flex-direction:column;align-items:stretch}
+  .item-top{display:flex;gap:14px;align-items:center}
   .item-img{width:68px;height:68px;border-radius:13px;object-fit:cover;flex:none;box-shadow:0 4px 12px rgba(0,0,0,.3)}
   .item-ph{width:68px;height:68px;border-radius:13px;flex:none;display:grid;place-items:center;background:var(--ph);border:1px solid var(--line)}
   .item-body{flex:1;min-width:0}.item-name{font-size:15.5px;font-weight:700;margin:0;color:var(--ink)}
   .item-desc{font-size:12.5px;color:var(--muted);margin:4px 0 0;line-height:1.35}
   .item-side{display:flex;flex-direction:column;align-items:flex-end;gap:11px}
+  .sizes{display:flex;flex-direction:column;gap:8px;margin-top:13px}
+  .size-row{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:13px;background:var(--ph);border:1px solid var(--line)}
+  .size-name{flex:1;font-size:14px;font-weight:600;color:var(--ink)}
   .price{font-weight:800;font-size:13.5px;background:linear-gradient(135deg,var(--price),var(--price-dk));color:var(--price-ink);padding:6px 12px;border-radius:999px;white-space:nowrap;box-shadow:0 3px 12px var(--glow)}
   .add{width:42px;height:42px;border-radius:13px;border:none;cursor:pointer;background:linear-gradient(135deg,var(--acc-lt),var(--accent));color:var(--acc-ink);font-size:25px;font-weight:700;display:grid;place-items:center;line-height:1;transition:.12s;box-shadow:0 4px 14px var(--glow)}
   .add:active{transform:scale(.88)}
@@ -366,7 +398,7 @@ const G=accLt;
 if(CONFIG.logo){document.getElementById("logoWrap").innerHTML='<svg class="mark" style="display:block" width="92" height="58" viewBox="0 0 100 62" fill="none" stroke="'+G+'" stroke-width="2.4" stroke-linecap="round"><path d="M9 53 A41 41 0 0 1 91 53 Z"/><line x1="50" y1="53" x2="30" y2="18"/><line x1="50" y1="53" x2="50" y2="12"/><line x1="50" y1="53" x2="70" y2="18"/><circle cx="50" cy="27" r="3.2" fill="'+G+'" stroke="none"/><circle cx="37" cy="42" r="3.2" fill="'+G+'" stroke="none"/><circle cx="63" cy="42" r="3.2" fill="'+G+'" stroke="none"/></svg>'}
 const bEl=document.getElementById("brandName");bEl.textContent=CONFIG.name;if(CONFIG.serif)bEl.classList.add("serif");
 if(CONFIG.sub){const s=document.getElementById("brandSub");s.textContent=CONFIG.sub;s.classList.add("show")}
-const tg=document.getElementById("tagline");tg.textContent=CONFIG.tagline||"";if(CONFIG.serif)tg.classList.add("serif");
+const tgEl=document.getElementById("tagline");tgEl.textContent=CONFIG.tagline||"";if(CONFIG.serif)tgEl.classList.add("serif");
 if(CONFIG.halal)document.getElementById("halal").classList.add("show");
 
 const ICONS={
@@ -383,6 +415,9 @@ function catIcon(cat){const c=(cat||"").toLowerCase();
 
 const cart={};const byId={};
 MENU.forEach(s=>s.items.forEach(i=>byId[i.id]=i));
+function resolve(key){const a=key.split("@");const it=byId[a[0]];
+  if(a.length>1){const sz=it.sizes[+a[1]];return {name:it.name+" · "+sz.label,price:sz.price}}
+  return {name:it.name,price:it.price};}
 const cur=CONFIG.currency;const money=n=>n.toLocaleString("ru-RU")+" "+cur;
 const mainBtn=document.getElementById("mainBtn");const trayBtn=document.getElementById("trayBtn");
 document.getElementById("infoTime").textContent="⏱ "+CONFIG.workTime;
@@ -394,21 +429,27 @@ const menuEl=document.getElementById("menu");
 const revObs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");revObs.unobserve(e.target)}})},{rootMargin:"0px 0px -8% 0px"});
 MENU.forEach((s,idx)=>{const sec=document.createElement("section");sec.id="sec-"+idx;sec.innerHTML='<h2 class="sec-title">'+s.cat+'</h2>';
   s.items.forEach(it=>{const row=document.createElement("div");row.className="item";
-    row.innerHTML=(it.img?'<img class="item-img" src="'+it.img+'" alt="">':'<div class="item-ph">'+catIcon(s.cat)+'</div>')+
-      '<div class="item-body"><p class="item-name">'+it.name+'</p>'+(it.desc?'<p class="item-desc">'+it.desc+'</p>':'')+'</div>'+
-      '<div class="item-side"><span class="price">'+money(it.price)+'</span><div id="ctrl-'+it.id+'"></div></div>';
+    const imgH=it.img?'<img class="item-img" src="'+it.img+'" alt="">':'<div class="item-ph">'+catIcon(s.cat)+'</div>';
+    const bodyH='<div class="item-body"><p class="item-name">'+it.name+'</p>'+(it.desc?'<p class="item-desc">'+it.desc+'</p>':'')+'</div>';
+    if(it.sizes&&it.sizes.length){row.classList.add("sized");
+      let sr=it.sizes.map((sz,si)=>'<div class="size-row"><span class="size-name">'+sz.label+'</span><span class="price">'+money(sz.price)+'</span><div id="ctrl-'+it.id+'@'+si+'"></div></div>').join("");
+      row.innerHTML='<div class="item-top">'+imgH+bodyH+'</div><div class="sizes">'+sr+'</div>';
+    }else{
+      row.innerHTML=imgH+bodyH+'<div class="item-side"><span class="price">'+money(it.price)+'</span><div id="ctrl-'+it.id+'"></div></div>';
+    }
     sec.appendChild(row);menuEl.appendChild(sec);revObs.observe(row)})});
 const catBtns=[...catsEl.children];
 const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){const i=+e.target.id.split("-")[1];catBtns.forEach((b,k)=>b.classList.toggle("active",k===i))}})},{rootMargin:"-55% 0px -42% 0px"});
 MENU.forEach((s,idx)=>obs.observe(document.getElementById("sec-"+idx)));
-function renderCtrl(id){const el=document.getElementById("ctrl-"+id);const q=cart[id]||0;
-  if(q===0){el.innerHTML='<button class="add" type="button">+</button>';el.firstChild.onclick=()=>change(id,1)}
-  else{el.innerHTML='<div class="stepper"><button type="button">−</button><span class="q">'+q+'</span><button type="button">+</button></div>';const m=el.firstChild.children[0],p=el.firstChild.children[2];m.onclick=()=>change(id,-1);p.onclick=()=>change(id,1)}}
-MENU.forEach(s=>s.items.forEach(i=>renderCtrl(i.id)));
-function change(id,d){cart[id]=(cart[id]||0)+d;if(cart[id]<=0)delete cart[id];renderCtrl(id);updateTray();
+function ctrlKeys(){const ks=[];MENU.forEach(s=>s.items.forEach(it=>{if(it.sizes&&it.sizes.length){it.sizes.forEach((sz,si)=>ks.push(it.id+"@"+si))}else{ks.push(it.id)}}));return ks}
+function renderCtrl(key){const el=document.getElementById("ctrl-"+key);if(!el)return;const q=cart[key]||0;
+  if(q===0){el.innerHTML='<button class="add" type="button">+</button>';el.firstChild.onclick=()=>change(key,1)}
+  else{el.innerHTML='<div class="stepper"><button type="button">−</button><span class="q">'+q+'</span><button type="button">+</button></div>';const m=el.firstChild.children[0],p=el.firstChild.children[2];m.onclick=()=>change(key,-1);p.onclick=()=>change(key,1)}}
+ctrlKeys().forEach(renderCtrl);
+function change(key,d){cart[key]=(cart[key]||0)+d;if(cart[key]<=0)delete cart[key];renderCtrl(key);updateTray();
   if(d>0){trayBtn.classList.remove("bump");void trayBtn.offsetWidth;trayBtn.classList.add("bump")}
   if(document.getElementById("sheet").classList.contains("show")&&document.getElementById("resultBlock").style.display==="none")renderTicket()}
-function subtotal(){return Object.entries(cart).reduce((s,[id,q])=>s+byId[id].price*q,0)}
+function subtotal(){return Object.entries(cart).reduce((s,[k,q])=>s+resolve(k).price*q,0)}
 function count(){return Object.values(cart).reduce((s,q)=>s+q,0)}
 function updateTray(){const n=count();document.getElementById("trayCount").textContent=n;document.getElementById("trayTotal").textContent=money(subtotal());document.getElementById("tray").classList.toggle("show",n>0)}
 function openSheet(){backToCart();renderTicket();document.getElementById("overlay").classList.add("show");document.getElementById("sheet").classList.add("show");document.body.style.overflow="hidden"}
@@ -416,14 +457,14 @@ function closeSheet(){document.getElementById("overlay").classList.remove("show"
 function renderTicket(){const t2=document.getElementById("ticket");const ids=Object.keys(cart);
   if(ids.length===0){t2.innerHTML='<div class="empty">Корзина пуста 🍕</div>';document.getElementById("formBlock").style.display="none";mainBtn.disabled=true;return}
   document.getElementById("formBlock").style.display="";mainBtn.disabled=false;
-  let rows="";ids.forEach(id=>{const it=byId[id],q=cart[id];rows+='<div class="t-row"><span class="t-name"><span class="t-q">'+q+'×</span>'+it.name+'</span><span>'+money(it.price*q)+'</span><span class="t-mini"><button type="button" onclick="change(\\''+id+'\\',-1)">−</button><button type="button" onclick="change(\\''+id+'\\',1)">+</button></span></div>'});
+  let rows="";ids.forEach(k=>{const r=resolve(k),q=cart[k];rows+='<div class="t-row"><span class="t-name"><span class="t-q">'+q+'×</span>'+r.name+'</span><span>'+money(r.price*q)+'</span><span class="t-mini"><button type="button" onclick="change(\\''+k+'\\',-1)">−</button><button type="button" onclick="change(\\''+k+'\\',1)">+</button></span></div>'});
   const sub=subtotal(),dlv=CONFIG.deliveryFee||0,total=sub+dlv;
   let sums='<div class="t-sum"><span>Сумма</span><span>'+money(sub)+'</span></div>';if(dlv>0)sums+='<div class="t-sum"><span>Доставка</span><span>'+money(dlv)+'</span></div>';
   sums+='<div class="t-total"><span>Итого</span><span>'+money(total)+'</span></div>';
   t2.innerHTML='<div class="t-total" style="font-size:13px;letter-spacing:1px;color:var(--acc-lt)">🧾 ВАШ ЗАКАЗ</div><hr class="tear">'+rows+'<hr class="tear">'+sums}
 function buildOrderText(name,phone,addr,note){const sub=subtotal(),dlv=CONFIG.deliveryFee||0,total=sub+dlv;let lines=[];
   lines.push("🧾 НОВЫЙ ЗАКАЗ — "+CONFIG.name);lines.push("————————————");
-  Object.keys(cart).forEach(id=>{const it=byId[id],q=cart[id];lines.push(q+"× "+it.name+" — "+money(it.price*q))});
+  Object.keys(cart).forEach(k=>{const r=resolve(k),q=cart[k];lines.push(q+"× "+r.name+" — "+money(r.price*q))});
   lines.push("————————————");lines.push("Сумма: "+money(sub));if(dlv>0)lines.push("Доставка: "+money(dlv));
   lines.push("ИТОГО: "+money(total));lines.push("");lines.push("👤 "+name);lines.push("📞 "+phone);lines.push("📍 "+addr);if(note)lines.push("💬 "+note);return lines.join("\\n")}
 function copyText(x){try{navigator.clipboard.writeText(x)}catch(e){const ta=document.createElement("textarea");ta.value=x;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.focus();ta.select();try{document.execCommand("copy")}catch(_){}document.body.removeChild(ta)}}
@@ -453,7 +494,7 @@ mainBtn.onclick=orderConfirm;updateTray();
   var fm=document.getElementById("fMap");if(fm){if(CONFIG.yandex){fm.href=CONFIG.yandex}else{fm.style.display="none"}}
   if(!CONFIG.address&&fa)fa.closest(".frow").style.display="none";
   if(!CONFIG.openHours&&fh)fh.closest(".frow").style.display="none";
-  var fc=document.getElementById("fCopy");if(fc)fc.textContent=CONFIG.name+(CONFIG.tagline?" · "+CONFIG.tagline:"");
+  var fcp=document.getElementById("fCopy");if(fcp)fcp.textContent=CONFIG.name+(CONFIG.tagline?" · "+CONFIG.tagline:"");
   var c=document.getElementById("fChannels");if(c){
     if(CONFIG.max){var a=document.createElement("a");a.className="ch-max";a.href=CONFIG.max;a.target="_blank";a.rel="noopener";a.textContent="МАКС";c.appendChild(a)}
     if(CONFIG.telegram){var a2=document.createElement("a");a2.className="ch-tg";a2.href="https://t.me/"+CONFIG.telegram.replace(/^@/,"");a2.target="_blank";a2.rel="noopener";a2.textContent="Telegram";c.appendChild(a2)}
