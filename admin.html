@@ -13,6 +13,7 @@
     display:flex;align-items:center;justify-content:space-between;gap:10px}
   .top h1{font-size:17px;margin:0;font-weight:800}
   .top .saved{font-size:12px;color:#9c9189}
+  .top .who{font-size:12px;color:#C9A36F;font-weight:700;margin-top:2px}
   .wrap{max-width:760px;margin:0 auto;padding:18px 16px 150px}
   .block{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:16px}
   .block h2{font-size:13px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--accent);margin:0 0 14px}
@@ -64,7 +65,7 @@
 </head>
 <body>
 <div class="top">
-  <h1>🍔 Редактор меню</h1>
+  <div><h1>🍔 Редактор меню</h1><div class="who" id="who"></div></div>
   <span class="saved" id="saved">сохраняется автоматически</span>
 </div>
 
@@ -104,12 +105,15 @@
 </div>
 
 <script>
-const KEY="menuAdminDraft";
-let draft=load() || {
-  config:{name:"Burger",tagline:"Быстро. Вкусно. С доставкой.",whatsapp:"",currency:"₽",
+const PARAMS=new URLSearchParams(location.search);
+const RID=(PARAMS.get("r")||"").replace(/[^a-z0-9_-]/gi,"");
+const KEY="menuAdminDraft"+(RID?"_"+RID:"");
+let draft=null,C=null;
+function DEFAULT_DRAFT(){return {
+  config:{name:RID||"Burger",tagline:"Быстро. Вкусно. С доставкой.",whatsapp:"",currency:"₽",
           deliveryFee:150,minOrder:500,workTime:"30–45 мин"},
   menu:[{cat:"Бургеры",items:[{id:nid(),name:"Чизбургер",desc:"Говядина, чеддер, соус",price:320,img:""}]}]
-};
+}}
 
 function nid(){return "i"+Math.random().toString(36).slice(2,8)}
 function save(){
@@ -121,15 +125,17 @@ let flashT;
 function flash(t){const s=document.getElementById("saved");s.textContent=t;
   clearTimeout(flashT);flashT=setTimeout(()=>s.textContent="сохраняется автоматически",1500)}
 
-const C=draft.config;
-[["c_name","name"],["c_tagline","tagline"],["c_wa","whatsapp"],["c_time","workTime"],
- ["c_cur","currency"],["c_dlv","deliveryFee"],["c_min","minOrder"]].forEach(([el,k])=>{
-  const node=document.getElementById(el);node.value=C[k];
-  node.oninput=()=>{let v=node.value;
-    if(k==="deliveryFee"||k==="minOrder"){v=parseInt(v.replace(/\D/g,""))||0}
-    if(k==="whatsapp"){v=v.replace(/\D/g,"");node.value=v}
-    C[k]=v;save()};
-});
+function bindConfig(){
+  C=draft.config;
+  [["c_name","name"],["c_tagline","tagline"],["c_wa","whatsapp"],["c_time","workTime"],
+   ["c_cur","currency"],["c_dlv","deliveryFee"],["c_min","minOrder"]].forEach(([el,k])=>{
+    const node=document.getElementById(el);node.value=C[k];
+    node.oninput=()=>{let v=node.value;
+      if(k==="deliveryFee"||k==="minOrder"){v=parseInt(v.replace(/\D/g,""))||0}
+      if(k==="whatsapp"){v=v.replace(/\D/g,"");node.value=v}
+      C[k]=v;save()};
+  });
+}
 
 /* ===== сжатие фото ===== */
 function resizeImage(file,max,q,cb){
@@ -200,7 +206,30 @@ function moveItem(ci,i,dir){const arr=draft.menu[ci].items;const j=i+dir;if(j<0|
   [arr[i],arr[j]]=[arr[j],arr[i]];save();render()}
 function addCat(){draft.menu.push({cat:"Новая категория",items:[{id:nid(),name:"",desc:"",price:0,img:""}]});save();render()}
 function resetAll(){if(confirm("Стереть всё и начать с чистого листа?")){localStorage.removeItem(KEY);location.reload()}}
-render();
+
+async function fetchMenu(rid){
+  try{
+    const res=await fetch(rid+"/index.html",{cache:"no-store"});
+    if(!res.ok)return null;
+    const html=await res.text();
+    const cs=html.indexOf("const CONFIG = "),ms=html.indexOf("const MENU = "),ce=html.indexOf("const cart={}",ms>=0?ms:0);
+    if(cs<0||ms<0||ce<0)return null;
+    const cfg=JSON.parse(html.slice(cs+15,ms).trim().replace(/;$/,""));
+    const menu=JSON.parse(html.slice(ms+13,ce).trim().replace(/;$/,""));
+    menu.forEach(c=>c.items.forEach(i=>{if(!i.id)i.id=nid();if(i.img===undefined)i.img=""}));
+    return {config:cfg,menu};
+  }catch(e){return null}
+}
+async function init(){
+  document.getElementById("who").textContent = RID ? ("Меню: "+RID) : "Новое меню";
+  const saved=load();
+  if(saved){draft=saved}
+  else if(RID){const m=await fetchMenu(RID);draft=m||DEFAULT_DRAFT();
+    if(!m)flash("начните с нуля и сохраните меню")}
+  else{draft=DEFAULT_DRAFT()}
+  bindConfig();render();
+}
+init();
 
 /* ===== сборка и сохранение ===== */
 function showMsg(t,ok){const m=document.getElementById("msg");m.textContent=t;
