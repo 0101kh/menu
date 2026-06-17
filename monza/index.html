@@ -930,9 +930,23 @@ function resolve(key){const a=key.split("@");const it=byId[a[0]];
   return {name:it.name,price:it.price};}
 const cur=CONFIG.currency;const money=n=>n.toLocaleString("ru-RU")+" "+cur;
 const mainBtn=document.getElementById("mainBtn");const trayBtn=document.getElementById("trayBtn");
-document.getElementById("infoTime").textContent="⏱ "+CONFIG.workTime;
-document.getElementById("infoDelivery").textContent=CONFIG.deliveryFee>0?"🛵 Доставка "+money(CONFIG.deliveryFee):"🛵 Доставка бесплатно";
-const minEl=document.getElementById("infoMin");if(CONFIG.minOrder>0){minEl.textContent="🧾 Минимум "+money(CONFIG.minOrder)}else{minEl.style.display="none"}
+const Q=new URLSearchParams(location.search);
+const TABLE=(Q.get("table")||Q.get("t")||Q.get("стол")||"").trim().replace(/[^0-9A-Za-zА-Яа-яЁё-]/g,"").slice(0,12);
+const DINE=!!TABLE;
+const DLVFEE=DINE?0:(CONFIG.deliveryFee||0);
+const MINORD=DINE?0:(CONFIG.minOrder||0);
+if(DINE){
+  document.getElementById("infoTime").textContent="🍽 Стол №"+TABLE;
+  document.getElementById("infoDelivery").textContent="Заказ в зале";
+  document.getElementById("infoMin").style.display="none";
+  var _fa=document.getElementById("f-addr");if(_fa)_fa.style.display="none";
+  var _fp=document.getElementById("f-phone");if(_fp)_fp.style.display="none";
+  var _fn=document.getElementById("footNote");if(_fn)_fn.textContent="Заказ со столика №"+TABLE+" — отправьте, его примут";
+}else{
+  document.getElementById("infoTime").textContent="⏱ "+CONFIG.workTime;
+  document.getElementById("infoDelivery").textContent=CONFIG.deliveryFee>0?"🛵 Доставка "+money(CONFIG.deliveryFee):"🛵 Доставка бесплатно";
+  var minEl=document.getElementById("infoMin");if(CONFIG.minOrder>0){minEl.textContent="🧾 Минимум "+money(CONFIG.minOrder)}else{minEl.style.display="none"}
+}
 const catsEl=document.getElementById("cats");
 MENU.forEach((s,idx)=>{const b=document.createElement("button");b.className="cat"+(idx===0?" active":"");b.textContent=s.cat;b.onclick=()=>{document.getElementById("sec-"+idx).scrollIntoView({behavior:"smooth",block:"start"})};catsEl.appendChild(b)});
 const menuEl=document.getElementById("menu");
@@ -968,15 +982,19 @@ function renderTicket(){const t2=document.getElementById("ticket");const ids=Obj
   if(ids.length===0){t2.innerHTML='<div class="empty">Корзина пуста 🍕</div>';document.getElementById("formBlock").style.display="none";mainBtn.disabled=true;return}
   document.getElementById("formBlock").style.display="";mainBtn.disabled=false;
   let rows="";ids.forEach(k=>{const r=resolve(k),q=cart[k];rows+='<div class="t-row"><span class="t-name"><span class="t-q">'+q+'×</span>'+r.name+'</span><span>'+money(r.price*q)+'</span><span class="t-mini"><button type="button" onclick="change(\''+k+'\',-1)">−</button><button type="button" onclick="change(\''+k+'\',1)">+</button></span></div>'});
-  const sub=subtotal(),dlv=CONFIG.deliveryFee||0,total=sub+dlv;
+  const sub=subtotal(),dlv=DLVFEE,total=sub+dlv;
   let sums='<div class="t-sum"><span>Сумма</span><span>'+money(sub)+'</span></div>';if(dlv>0)sums+='<div class="t-sum"><span>Доставка</span><span>'+money(dlv)+'</span></div>';
   sums+='<div class="t-total"><span>Итого</span><span>'+money(total)+'</span></div>';
   t2.innerHTML='<div class="t-total" style="font-size:13px;letter-spacing:1px;color:var(--acc-lt)">🧾 ВАШ ЗАКАЗ</div><hr class="tear">'+rows+'<hr class="tear">'+sums}
-function buildOrderText(name,phone,addr,note){const sub=subtotal(),dlv=CONFIG.deliveryFee||0,total=sub+dlv;let lines=[];
-  lines.push("🧾 НОВЫЙ ЗАКАЗ — "+CONFIG.name);lines.push("————————————");
+function buildOrderText(name,phone,addr,note){const sub=subtotal(),dlv=DLVFEE,total=sub+dlv;let lines=[];
+  lines.push((DINE?"🍽 ЗАКАЗ В ЗАЛЕ — ":"🧾 НОВЫЙ ЗАКАЗ — ")+CONFIG.name);
+  if(DINE)lines.push("🪑 Стол №"+TABLE);
+  lines.push("————————————");
   Object.keys(cart).forEach(k=>{const r=resolve(k),q=cart[k];lines.push(q+"× "+r.name+" — "+money(r.price*q))});
   lines.push("————————————");lines.push("Сумма: "+money(sub));if(dlv>0)lines.push("Доставка: "+money(dlv));
-  lines.push("ИТОГО: "+money(total));lines.push("");lines.push("👤 "+name);lines.push("📞 "+phone);lines.push("📍 "+addr);if(note)lines.push("💬 "+note);return lines.join("\n")}
+  lines.push("ИТОГО: "+money(total));lines.push("");lines.push("👤 "+name);
+  if(!DINE){lines.push("📞 "+phone);lines.push("📍 "+addr)}
+  if(note)lines.push("💬 "+note);return lines.join("\n")}
 function copyText(x){try{navigator.clipboard.writeText(x)}catch(e){const ta=document.createElement("textarea");ta.value=x;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.focus();ta.select();try{document.execCommand("copy")}catch(_){}document.body.removeChild(ta)}}
 function renderChannels(text){const c=document.getElementById("channels");c.innerHTML="";const enc=encodeURIComponent(text);
   if(CONFIG.max){const a=document.createElement("a");a.className="ch ch-max";a.href=CONFIG.max;a.target="_blank";a.rel="noopener";a.textContent="Открыть МАКС";c.appendChild(a)}
@@ -986,15 +1004,15 @@ function orderConfirm(){const name=document.getElementById("inName").value.trim(
   const addr=document.getElementById("inAddr").value.trim();const note=document.getElementById("inNote").value.trim();
   ["f-name","f-phone","f-addr"].forEach(f=>document.getElementById(f).classList.remove("invalid"));
   const err=document.getElementById("errBox");err.classList.remove("show");const sub=subtotal();if(sub===0)return;
-  if(CONFIG.minOrder>0&&sub<CONFIG.minOrder){err.textContent="Минимальный заказ — "+money(CONFIG.minOrder)+". Добавьте ещё на "+money(CONFIG.minOrder-sub)+".";err.classList.add("show");return}
-  let bad=[];if(!name)bad.push("f-name");if(!phone)bad.push("f-phone");if(!addr)bad.push("f-addr");
-  if(bad.length){bad.forEach(f=>document.getElementById(f).classList.add("invalid"));err.textContent="Заполните имя, телефон и адрес.";err.classList.add("show");document.getElementById(bad[0]).scrollIntoView({behavior:"smooth",block:"center"});return}
+  if(MINORD>0&&sub<MINORD){err.textContent="Минимальный заказ — "+money(MINORD)+". Добавьте ещё на "+money(MINORD-sub)+".";err.classList.add("show");return}
+  let bad=[];if(!name)bad.push("f-name");if(!DINE&&!phone)bad.push("f-phone");if(!DINE&&!addr)bad.push("f-addr");
+  if(bad.length){bad.forEach(f=>document.getElementById(f).classList.add("invalid"));err.textContent=DINE?"Укажите ваше имя.":"Заполните имя, телефон и адрес.";err.classList.add("show");document.getElementById(bad[0]).scrollIntoView({behavior:"smooth",block:"center"});return}
   const text=buildOrderText(name,phone,addr,note);copyText(text);document.getElementById("orderText").textContent=text;renderChannels(text);
   document.getElementById("ticket").style.display="none";document.getElementById("formBlock").style.display="none";document.getElementById("resultBlock").style.display="";
   document.getElementById("sheetTitle").textContent="Заказ готов";document.getElementById("footNote").textContent="Скопировано. Вставь в чат и отправь.";
   mainBtn.textContent="← Изменить заказ";mainBtn.onclick=backToCart;document.getElementById("sheetScroll").scrollTop=0}
 function backToCart(){document.getElementById("resultBlock").style.display="none";document.getElementById("ticket").style.display="";
-  document.getElementById("sheetTitle").textContent="Ваш заказ";document.getElementById("footNote").textContent="Соберём заказ и скопируем — останется вставить в чат";
+  document.getElementById("sheetTitle").textContent="Ваш заказ";document.getElementById("footNote").textContent=DINE?("Заказ со столика №"+TABLE+" — отправьте, его примут"):"Соберём заказ и скопируем — останется вставить в чат";
   mainBtn.textContent="Оформить заказ";mainBtn.onclick=orderConfirm;renderTicket()}
 document.getElementById("copyBtn").onclick=()=>copyText(document.getElementById("orderText").textContent);
 mainBtn.onclick=orderConfirm;updateTray();
