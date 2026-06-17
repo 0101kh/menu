@@ -70,6 +70,8 @@
       <div><label>Фирменный цвет</label><input id="c_accent" type="color"></div>
       <div><label>Цвет ценника</label><input id="c_price" type="color"></div>
     </div>
+    <label class="chk"><input type="checkbox" id="c_headerTint"> Отдельный цвет шапки (фон логотипа)</label>
+    <div style="margin:2px 0 8px"><label>Цвет шапки</label><input id="c_headerBg" type="color"></div>
     <label class="chk"><input type="checkbox" id="c_logo"> Логотип-пицца над названием</label>
     <label class="chk"><input type="checkbox" id="c_serif"> Шрифт с засечками (элегантный)</label>
     <label class="chk"><input type="checkbox" id="c_halal"> Бейдж HALAL</label>
@@ -105,7 +107,7 @@ const PNAME=PARAMS.get("name")||"";const PWA=(PARAMS.get("wa")||"").replace(/\D/
 const KEY="menuAdminDraft"+(RID?"_"+RID:"");
 let draft=null,C=null;
 function defConfig(){return {name:PNAME||RID||"MONZA",sub:"PIZZA",tagline:"Вкус, который объединяет",
-  theme:"dark",bg:"#0E2A22",accent:"#C9A24B",priceColor:"#E23A35",logo:true,serif:true,halal:true,
+  theme:"dark",bg:"#0E2A22",accent:"#C9A24B",priceColor:"#E23A35",logo:true,serif:true,halal:true,headerTint:false,headerBg:"#0E2A22",
   currency:"₽",deliveryFee:0,minOrder:0,workTime:"40–60 мин",
   phone:"",address:"",openHours:"",yandex:"",max:"",telegram:"",whatsapp:PWA}}
 function DEFAULT_DRAFT(){return {config:defConfig(),
@@ -118,10 +120,10 @@ function load(){try{return JSON.parse(localStorage.getItem(KEY))}catch(e){return
 let flashT;function flash(t){const s=document.getElementById("saved");s.textContent=t;clearTimeout(flashT);flashT=setTimeout(()=>s.textContent="сохраняется автоматически",1500)}
 
 const TEXTKEYS=[["c_name","name"],["c_sub","sub"],["c_tagline","tagline"],["c_theme","theme"],["c_bg","bg"],
- ["c_accent","accent"],["c_price","priceColor"],["c_time","workTime"],["c_cur","currency"],
+ ["c_accent","accent"],["c_price","priceColor"],["c_time","workTime"],["c_cur","currency"],["c_headerBg","headerBg"],
  ["c_dlv","deliveryFee"],["c_min","minOrder"],["c_phone","phone"],["c_addr","address"],["c_hours","openHours"],["c_yx","yandex"],
  ["c_max","max"],["c_tg","telegram"],["c_wa","whatsapp"]];
-const CHKKEYS=[["c_logo","logo"],["c_serif","serif"],["c_halal","halal"]];
+const CHKKEYS=[["c_logo","logo"],["c_serif","serif"],["c_halal","halal"],["c_headerTint","headerTint"]];
 function bindConfig(){C=draft.config;
   TEXTKEYS.forEach(([id,k])=>{const node=document.getElementById(id);node.value=C[k]??"";
     node.oninput=()=>{let v=node.value;
@@ -207,7 +209,7 @@ function cleanData(){
     return base})})).filter(c=>c.cat&&c.items.length);
   const config={name:C.name.trim(),sub:(C.sub||"").trim(),tagline:(C.tagline||"").trim(),theme:C.theme||"light",
     bg:C.bg||"#0E2A22",accent:C.accent||"#E0341E",priceColor:C.priceColor||C.accent||"#E0341E",
-    logo:!!C.logo,serif:!!C.serif,halal:!!C.halal,currency:(C.currency||"₽").trim()||"₽",
+    logo:!!C.logo,serif:!!C.serif,halal:!!C.halal,headerTint:!!C.headerTint,headerBg:C.headerBg||"#0E2A22",currency:(C.currency||"₽").trim()||"₽",
     deliveryFee:C.deliveryFee||0,minOrder:C.minOrder||0,workTime:(C.workTime||"").trim()||"30–45 мин",
     phone:(C.phone||"").trim(),address:(C.address||"").trim(),openHours:(C.openHours||"").trim(),yandex:(C.yandex||"").trim(),
     max:(C.max||"").trim(),telegram:(C.telegram||"").replace(/^@/,"").trim(),whatsapp:(C.whatsapp||"").replace(/\D/g,"")};
@@ -401,6 +403,10 @@ const bEl=document.getElementById("brandName");bEl.textContent=CONFIG.name;if(CO
 if(CONFIG.sub){const s=document.getElementById("brandSub");s.textContent=CONFIG.sub;s.classList.add("show")}
 const tgEl=document.getElementById("tagline");tgEl.textContent=CONFIG.tagline||"";if(CONFIG.serif)tgEl.classList.add("serif");
 if(CONFIG.halal)document.getElementById("halal").classList.add("show");
+if(CONFIG.headerTint&&CONFIG.headerBg){var _hdr=document.querySelector("header");_hdr.style.background=CONFIG.headerBg;
+  var _dark=accInk(CONFIG.headerBg)==="#ffffff";var _tc=_dark?"rgba(255,255,255,.82)":"rgba(0,0,0,.55)";
+  document.querySelectorAll(".info span").forEach(function(s){s.style.color=_tc;s.style.borderColor=_dark?"rgba(255,255,255,.28)":"rgba(0,0,0,.16)";s.style.background=_dark?"rgba(255,255,255,.06)":"rgba(0,0,0,.03)"});
+  var _tg=document.getElementById("tagline");if(_tg&&_dark)_tg.style.color=accLt;}
 
 const ICONS={
   pizza:'<svg width="42" height="42" viewBox="0 0 48 48" fill="none" stroke="'+G+'" stroke-width="2"><path d="M24 6l16 31c-10 5-22 5-32 0L24 6z"/><circle cx="20" cy="25" r="2" fill="'+G+'" stroke="none"/><circle cx="28" cy="28" r="2" fill="'+G+'" stroke="none"/></svg>',
