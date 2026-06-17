@@ -892,17 +892,18 @@ function mix(hex,tgt,amt){const c=hx(hex);return toHex(c.map(x=>x+(tgt-x)*amt))}
 function rgba(hex,a){const c=hx(hex);return "rgba("+c[0]+","+c[1]+","+c[2]+","+a+")"}
 function accInk(h){const c=hx(h);return (0.299*c[0]+0.587*c[1]+0.114*c[2])>150?"#1A1A1A":"#ffffff"}
 const ACC=CONFIG.accent||"#E0341E";const PRICE=CONFIG.priceColor||ACC;
-const accLt=mix(ACC,255,.4),accDk=mix(ACC,0,.24),priceDk=mix(PRICE,0,.22);
+const accLt=mix(ACC,255,CONFIG.theme==="dark"?.4:.2),accDk=mix(ACC,0,.24),priceDk=mix(PRICE,0,.22);
 const rs=document.documentElement.style;
 if(CONFIG.theme==="dark"){const bg=CONFIG.bg||"#0E2A22";
   rs.setProperty("--bg",bg);rs.setProperty("--bg2",mix(bg,255,.24));rs.setProperty("--card",mix(bg,255,.10));rs.setProperty("--card2",mix(bg,255,.17));
   rs.setProperty("--ink","#F4EFE2");rs.setProperty("--muted",mix(bg,255,.5));rs.setProperty("--line",rgba(ACC,.26));rs.setProperty("--ph",mix(bg,0,.32));
-}else{rs.setProperty("--bg","#FBF7F1");rs.setProperty("--bg2","#FFFFFF");rs.setProperty("--card","#FFFFFF");rs.setProperty("--card2","#FFFFFF");
-  rs.setProperty("--ink","#1C1714");rs.setProperty("--muted","#7A6F64");rs.setProperty("--line","#E7DDCD");rs.setProperty("--ph","#FBEFE2");}
+}else{rs.setProperty("--bg","#F6ECD9");rs.setProperty("--bg2","#FDF8EE");rs.setProperty("--card","#FFFDF7");rs.setProperty("--card2","#FFF8EB");
+  rs.setProperty("--ink","#2A2017");rs.setProperty("--muted","#8C7B63");rs.setProperty("--line",rgba(accDk,.22));rs.setProperty("--ph","#F3E7D1");}
 rs.setProperty("--accent",ACC);rs.setProperty("--acc-lt",accLt);rs.setProperty("--acc-dk",accDk);rs.setProperty("--acc-ink",accInk(ACC));
 rs.setProperty("--price",PRICE);rs.setProperty("--price-dk",priceDk);rs.setProperty("--price-ink",accInk(PRICE));
 rs.setProperty("--glow",rgba(ACC,CONFIG.theme==="dark"?.16:.1));
-rs.setProperty("--brand-grad","linear-gradient(95deg,"+accDk+" 0%,"+accLt+" 30%,"+ACC+" 50%,"+accLt+" 72%,"+accDk+" 100%)");
+var bgr=CONFIG.theme==="dark"?("linear-gradient(95deg,"+accDk+" 0%,"+accLt+" 30%,"+ACC+" 50%,"+accLt+" 72%,"+accDk+" 100%)"):("linear-gradient(95deg,"+mix(ACC,0,.3)+" 0%,"+ACC+" 35%,"+mix(ACC,0,.12)+" 50%,"+ACC+" 65%,"+mix(ACC,0,.3)+" 100%)");
+rs.setProperty("--brand-grad",bgr);
 const G=accLt;
 if(CONFIG.logo){document.getElementById("logoWrap").innerHTML='<svg class="mark" style="display:block" width="92" height="58" viewBox="0 0 100 62" fill="none" stroke="'+G+'" stroke-width="2.4" stroke-linecap="round"><path d="M9 53 A41 41 0 0 1 91 53 Z"/><line x1="50" y1="53" x2="30" y2="18"/><line x1="50" y1="53" x2="50" y2="12"/><line x1="50" y1="53" x2="70" y2="18"/><circle cx="50" cy="27" r="3.2" fill="'+G+'" stroke="none"/><circle cx="37" cy="42" r="3.2" fill="'+G+'" stroke="none"/><circle cx="63" cy="42" r="3.2" fill="'+G+'" stroke="none"/></svg>'}
 const bEl=document.getElementById("brandName");bEl.textContent=CONFIG.name;if(CONFIG.serif)bEl.classList.add("serif");
